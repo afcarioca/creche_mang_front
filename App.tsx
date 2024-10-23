@@ -13,6 +13,7 @@ import GoogleScreen from "./GoogleScreen";
 import UploadScreen from "./UploadScreen";
 import Home from "./Home";
 import SearchScreen from "./SearchScreen";
+import CardScreen from "./CardScreen";
 import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -31,6 +32,7 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
+      
       <Stack.Screen name="Home" component={Home}  
           options={({ navigation }) => ({
             headerTitle: () => (
@@ -49,6 +51,7 @@ const App = () =>{
            
           })}
       />
+      <Stack.Screen name="CardScreen" component={CardScreen} />
 
       <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
       <Stack.Screen name="SearchScreen" component={SearchScreen}  
@@ -71,6 +74,7 @@ const App = () =>{
       />
 
       <Stack.Screen name="UploadScreen" component={UploadScreen} />
+
       <Stack.Screen name="CadastroScreen" component={CadastroScreen}  
            options={({ navigation }) => ({
             headerTitle: () => (
