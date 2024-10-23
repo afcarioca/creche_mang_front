@@ -42,7 +42,7 @@ const fetchItems = async () => {
     
 return(
         <View>
-            <Button onPress={fetchItems} title="Ar"/>
+            <Button onPress={fetchItems} title="A"/>
         </View>
     );
 }
