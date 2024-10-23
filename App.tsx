@@ -11,6 +11,8 @@ import TextInputScreen from "./TextInputScreen";
 import ScrollScreen from "./ScrollScreen";
 import GoogleScreen from "./GoogleScreen";
 import UploadScreen from "./UploadScreen";
+import Home from "./Home";
+import SearchScreen from "./SearchScreen";
 import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -21,9 +23,6 @@ const styles = StyleSheet.create({
     height:40
   },
 
-  back:{
-     tintColor: '#FFF'
-  }
  
 })
 
@@ -32,13 +31,46 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
-    
-      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
-      <Stack.Screen name="UploadScreen" component={UploadScreen} />
- 
+      <Stack.Screen name="Home" component={Home}  
+          options={({ navigation }) => ({
+            headerTitle: () => (
+              <View>
+                   <Image
+                      source={require('./logo.png')} 
+                      style={styles.logo}
+                    />
+             
+              </View>   
+            ),
+            headerTitleAlign: 'center',
+            headerStyle:{
+              backgroundColor:"#03487a"
+            },
+           
+          })}
+      />
 
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="GoogleScreen" component={GoogleScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
+      <Stack.Screen name="SearchScreen" component={SearchScreen}  
+         options={({ navigation }) => ({
+          headerTitle: () => (
+            <View>
+                 <Image
+                    source={require('./logo.png')} 
+                    style={styles.logo}
+                  />
+           
+            </View>   
+          ),
+          headerTitleAlign: 'center',
+          headerStyle:{
+            backgroundColor:"#03487a"
+          },
+         
+        })}
+      />
+
+      <Stack.Screen name="UploadScreen" component={UploadScreen} />
       <Stack.Screen name="CadastroScreen" component={CadastroScreen}  
            options={({ navigation }) => ({
             headerTitle: () => (
@@ -47,18 +79,21 @@ const App = () =>{
                       source={require('./logo.png')} 
                       style={styles.logo}
                     />
-                  <TouchableOpacity onPress={() => navigation.goBack()} />
-              </View>
              
-              
+              </View>   
             ),
             headerTitleAlign: 'center',
             headerStyle:{
               backgroundColor:"#03487a"
             },
-         
+            headerBackVisible: false,
           })}
         />
+    
+
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="GoogleScreen" component={GoogleScreen} />
+      
         <Stack.Screen name="ViewScreen" component={ViewScreen} />
         <Stack.Screen name="TextScreen" component ={TextScreen} />
         <Stack.Screen name ="ImageScreen" component = {ImageScreen} />

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity, Image  } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity, Image, ToastAndroid } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:"#03487a"
+        backgroundColor:"#03487a",
        
       },
 
@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
       input: {
         width: '80%',
         height: 50,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
+        borderColor: '#19bdee',
+        borderBottomWidth:2,       
+       
         paddingLeft: 10,
         marginBottom: 15,
-        backgroundColor: '#fff',
+        backgroundColor: '#03487a',
+        color:"#fff"
     
       },
       inputEmail:{
@@ -72,20 +73,14 @@ const LoginScreen = ({navigation}) =>{
     const [erro, setErro] = useState("")
     
     const onSubmit = (dados) =>{
-        console.log(dados)
-        //https://crechemangback.vercel.app/api/login/
-        //http://192.168.0.21:8000/api/login/
-        //http://127.0.0.1:8000/api/login/
-        //192.168.42.138
         axios.post("http://192.168.42.77:8000/api/login/",dados,{
             withCredentials: true
         })
         .then(response => {
-            console.log(response.data);
-            navigation.navigate("HomeScreen");
+            ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
+            navigation.navigate("Home");
           })
           .catch(error => {
-            console.log(error);
             setErro("Login Inválido");
         });
         
@@ -102,7 +97,6 @@ const LoginScreen = ({navigation}) =>{
             <Image source={require('./logo.png')} 
                     style={styles.image} />
 
-       
             <Controller 
                 control = {control}
                 render ={({field: {onChange, onBlur, value}}) =>(
@@ -111,6 +105,7 @@ const LoginScreen = ({navigation}) =>{
                         onChangeText={onChange}
                         value={value}
                         placeholder="Usuário"
+                        placeholderTextColor="#888"
                     />
                 )}
                 name="usuario"
@@ -127,6 +122,7 @@ const LoginScreen = ({navigation}) =>{
                         value={value}
                         secureTextEntry
                         placeholder="Senha"
+                        placeholderTextColor="#888"
                     />
                 )}
                     name="senha"

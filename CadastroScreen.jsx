@@ -1,14 +1,18 @@
-import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity, Image  } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity,KeyboardAvoidingView, ToastAndroid   } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import axios from "axios";
+import { useState } from "react";
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:"#03487a"
+        backgroundColor:"#03487a",
+        
        
       },
 
@@ -16,12 +20,13 @@ const styles = StyleSheet.create({
       input: {
         width: '80%',
         height: 50,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
+        borderColor: '#19bdee',
+        borderBottomWidth:2,
         paddingLeft: 10,
-        marginBottom: 15,
-        backgroundColor: '#fff',
+        marginBottom: 10,
+        backgroundColor: '#03487a',
+        color:"#fff",
+
     
       },
       inputNome:{
@@ -39,9 +44,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,
+        marginTop:35
       },
 
-      cadastro:{
+      login:{
         color:"#fff",
         marginTop:30,
       }
@@ -49,30 +55,50 @@ const styles = StyleSheet.create({
 })
 
 const schema = yup.object().shape({
-    nome: yup.string().required('Campo nome obrigatório'),
+    username: yup.string().required('Campo nome obrigatório'),
              
-    email: yup.string().required('Campo e-mail Obrigatório')
+    email: yup.string().required('Campo e-mail obrigatório')
                        .email('E-mail inválido'),
-    senha: yup.string().required('Insira a senha')
+    password1: yup.string().required('Insira a senha')
                        .min(8, 'A senha deve conter no mínimo 8 caracteres'),
-    confirmaSenha: yup.string().oneOf([yup.ref('senha'), null], 'As senhas não coincidem')
+    password2: yup.string().oneOf([yup.ref('password1'), null], 'As senhas não coincidem')
     .required('Campo obrigatório'),
   
-                       
-  
     });
+
 const CadastroScreen = ({navigation}) =>{
     const {control, handleSubmit, formState:{errors}} = useForm({
         resolver: yupResolver(schema)
     });
 
+    const[error, setError] = useState("")
+
     const onSubmit = (dados) =>{
-        console.log(dados);
-        navigation.navigate("LoginScreen");
+        axios.post("http://192.168.42.77:8000/api/register/",dados,{
+            withCredentials: true
+        })
+        .then(response => {
+            ToastAndroid.show('Cadastrado com sucesso!', ToastAndroid.SHORT);
+            navigation.navigate("LoginScreen");
+          })
+          .catch(error => {
+            
+            setError(error.response.data.message)
+        });
+        
+        setTimeout(() => {
+            setError('');
+    }, 5000);
+       
+     
     }
 
+
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
              <Controller 
                 control = {control}
                 render ={({field: {onChange, onBlur, value}}) =>(
@@ -80,14 +106,15 @@ const CadastroScreen = ({navigation}) =>{
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
-                        placeholder="Insira o seu Nome"
+                        placeholder="Insira o nome"
+                        placeholderTextColor="#888"
                     />
                 )}
-                name="nome"
+                name="username"
                 rules={{required: true}}
                 defaultValue=""
             />
-            {errors.nome && <Text style={styles.erros}>{errors.nome.message}</Text>}
+            {errors.username && <Text style={styles.erros}>{errors.username.message}</Text>}
 
        
             <Controller 
@@ -97,7 +124,8 @@ const CadastroScreen = ({navigation}) =>{
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
-                        placeholder="Insira o seu e-mail"
+                        placeholder="Insira o e-mail"
+                        placeholderTextColor="#888"
                     />
                 )}
                 name="email"
@@ -114,13 +142,14 @@ const CadastroScreen = ({navigation}) =>{
                         value={value}
                         secureTextEntry
                         placeholder="Insira a senha"
+                        placeholderTextColor="#888"
                     />
                 )}
-                    name="senha"
+                    name="password1"
                     rules={{required: true}}
                     defaultValue=""
                 />
-            {errors.senha && <Text style={styles.erros}>{errors.senha.message}</Text>}  
+            {errors.password1 && <Text style={styles.erros}>{errors.password1.message}</Text>}  
             
             <Controller
                 control={control}
@@ -130,21 +159,24 @@ const CadastroScreen = ({navigation}) =>{
                         onChangeText={onChange}
                         value={value}
                         secureTextEntry
-                        placeholder="Insira a senha Novamente"
+                        placeholder="Insira a senha novamente"
+                        placeholderTextColor="#888"
                     />
                 )}
-                    name="confirmaSenha"
+                    name="password2"
                     rules={{required: true}}
                     defaultValue=""
                 />
-            {errors.confirmaSenha && <Text style={styles.erros}>{errors.confirmaSenha.message}</Text>}
+            {errors.password2 && <Text style={styles.erros}>{errors.password2.message}</Text>}
 
             
             <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                         <Text >Cadastrar</Text>
             </TouchableOpacity>
-            
-        </View>
+            <Text style={styles.login} onPress={() =>   navigation.navigate("LoginScreen")}>Login</Text>
+
+            <Text style={[styles.erros, styles.erro]}>{error}</Text> 
+        </KeyboardAvoidingView>
     );
 }
 
