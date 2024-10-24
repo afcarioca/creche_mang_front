@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { View, Text, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, ToastAndroid} from "react-native"
 import { Controller, useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -77,10 +77,6 @@ const styles = StyleSheet.create({
         color:'#19bdee',
       
       },
-
-    
-
-      
 
 })
 
@@ -168,7 +164,7 @@ const SearchScreen = ({navigation}) =>{
                     <Picker.Item label="Maternal 2" value="M2" />
                 </Picker>
                 )}
-      />
+          />
             {errors.turma && <Text style={styles.erros}>{errors.turma.message}</Text>}
         
         <Text style={styles.label}>Sexo:</Text>
@@ -196,11 +192,11 @@ const SearchScreen = ({navigation}) =>{
       <Controller
         control={control}
         name="bolsa_familia"
-        rules={{ required: true }}  // Define como obrigatório
+        rules={{ required: true }} 
         render={({ field: { onChange, value } }) => (
           <View>
             <RadioButton.Group
-              onValueChange={onChange} // Atualiza o valor ao selecionar uma opção
+              onValueChange={onChange} 
               value={value}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
