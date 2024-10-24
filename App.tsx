@@ -15,6 +15,7 @@ import Home from "./Home";
 import SearchScreen from "./SearchScreen";
 import CardScreen from "./CardScreen";
 import UpdateScreen from "./UpdateScreen";
+import ClasseScreen from "./ClasseScreen";
 import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -33,7 +34,31 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
+
+      <Stack.Screen name="Home" component={Home}  
+          options={({ navigation }) => ({
+            headerTitle: () => (
+              <View>
+                   <Image
+                      source={require('./logo.png')} 
+                      style={styles.logo}
+                    />
+             
+              </View>   
+            ),
+            headerTitleAlign: 'center',
+            headerStyle:{
+              backgroundColor:"#03487a"
+            },
+           
+          })}
+      />
+
+      <Stack.Screen name="ClasseScreen" component={ClasseScreen}  options={{ headerShown: false }} />
+
+
       <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
+    
 
       <Stack.Screen name="UpdateScreen" component={UpdateScreen}  options={{ headerShown: false }} />
 
@@ -58,26 +83,7 @@ const App = () =>{
   
       />
 
-      <Stack.Screen name="Home" component={Home}  
-          options={({ navigation }) => ({
-            headerTitle: () => (
-              <View>
-                   <Image
-                      source={require('./logo.png')} 
-                      style={styles.logo}
-                    />
-             
-              </View>   
-            ),
-            headerTitleAlign: 'center',
-            headerStyle:{
-              backgroundColor:"#03487a"
-            },
-           
-          })}
-      />
-
-
+     
 
       <Stack.Screen name="SearchScreen" component={SearchScreen}  
          options={({ navigation }) => ({

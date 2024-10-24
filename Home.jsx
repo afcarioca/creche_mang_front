@@ -27,6 +27,12 @@ const Home = ({navigation}) =>{
                         style={styles.pesquisa}
                     />
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('ClasseScreen')}>
+                    <Image
+                        source={require('./pesquisa.png')} 
+                        style={styles.pesquisa}
+                    />
+                </TouchableOpacity>
                
               
             </View>
