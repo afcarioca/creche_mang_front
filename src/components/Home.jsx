@@ -1,6 +1,7 @@
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import pesquisa from "../img/pesquisa.png";
 import usuarios from "../img/usuarios.png";
+import graficos from "../img/graficos.png";
 
 
 
@@ -21,6 +22,12 @@ const Home = ({navigation}) =>{
                         style={styles.pesquisa}
                     />
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('GraficoScreen')}>
+                    <Image
+                        source={graficos} 
+                        style={styles.grafico}
+                    />
+                </TouchableOpacity>
                
               
             </View>
@@ -37,6 +44,12 @@ const styles = StyleSheet.create({
     },
     pesquisa:{
         width:135,
+        height:135,
+        marginTop:50
+        
+    },
+    grafico:{
+        width:150,
         height:135,
         marginTop:50
         

@@ -24,11 +24,12 @@ const ClasseScreen = ({navigation}) =>{
 
     const onSubmit = (dados) => {
         console.log(dados)
-        axios.post("http://192.168.0.19:8000/api/form/",dados,{
+        axios.post("http://192.168.0.21:8000/api/form/",dados,{
             withCredentials: true
         })
         .then(response => {
             setalunos(response.data.data); 
+            console.log(response.data.data);
           })
           .catch(error => {
             console.log(error);

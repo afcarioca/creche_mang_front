@@ -56,7 +56,7 @@ const UpdateScreen = ({navigation}) =>{
   
     const[error, setError] = useState("")
     useEffect(() => {
-        axios.get(`http://192.168.0.19:8000/api/form/${idAluno}/`,{
+        axios.get(`http://192.168.0.21:8000/api/form/${idAluno}/`,{
             withCredentials: true
         })
         .then(response => {
@@ -96,7 +96,7 @@ const UpdateScreen = ({navigation}) =>{
     const onSubmit = async (dados) =>{
         dados["bolsa_familia"] = parseInt(dados.bolsa_familia);
         
-        await axios.put(`http://192.168.0.19:8000/api/form/${idAluno}/`,dados,{
+        await axios.put(`http://192.168.0.21:8000/api/form/${idAluno}/`,dados,{
             withCredentials: true
         })
         .then(response => {

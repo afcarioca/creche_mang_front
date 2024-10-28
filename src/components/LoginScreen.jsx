@@ -22,7 +22,7 @@ const LoginScreen = ({navigation}) =>{
     const [erro, setErro] = useState("")
     
     const onSubmit = (dados) =>{
-        axios.post("http://192.168.0.19:8000/api/login/",dados,{
+        axios.post("http://192.168.0.21:8000/api/login/",dados,{
             withCredentials: true
         })
         .then(response => {

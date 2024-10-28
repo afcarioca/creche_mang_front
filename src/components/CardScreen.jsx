@@ -36,7 +36,7 @@ const CardScreen = ({navigation}) =>{
         useCallback(() => {
             const fetch = async () => {
                 try {
-                    const response = await axios.get(`http://192.168.0.19:8000/api/form/${idAluno}/`, {
+                    const response = await axios.get(`http://192.168.0.21:8000/api/form/${idAluno}/`, {
                         withCredentials: true
                     });
                     setInf({
@@ -66,7 +66,7 @@ const CardScreen = ({navigation}) =>{
     const remover = () =>{
         const fetch = async () => {
             try {
-                const response = await axios.delete(`http://192.168.0.19:8000/api/form/${idAluno}/`, {
+                const response = await axios.delete(`http://192.168.0.21:8000/api/form/${idAluno}/`, {
                     withCredentials: true
                 });
                 setInf({

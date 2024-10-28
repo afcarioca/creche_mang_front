@@ -15,6 +15,7 @@ import SearchScreen from "./src/components/SearchScreen";
 import CardScreen from "./src/components/CardScreen";
 import UpdateScreen from "./src/components/UpdateScreen";
 import ClasseScreen from "./src/components/ClasseScreen";
+import GraficoScreen from "./src/components/GraficoScreen";
 import { Image, StyleSheet, View} from "react-native";
 import logo from "./src/img/logo.png";
 
@@ -24,6 +25,64 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
+      
+      <Stack.Screen name="ClasseScreen" component={ClasseScreen}  
+         options={({ navigation }) => ({
+          headerTitle: () => (
+            <View>
+                 <Image
+                    source={logo} 
+                    style={styles.logo}
+                  />
+            </View>   
+          ),
+          headerTitleAlign: 'center',
+          headerStyle:{
+            backgroundColor:"#03487a"
+          },
+         
+        })}
+      
+      />
+      <Stack.Screen name="GraficoScreen" component={GraficoScreen}  
+         options={({ navigation }) => ({
+          headerTitle: () => (
+            <View>
+                 <Image
+                    source={logo} 
+                    style={styles.logo}
+                  />
+           
+            </View>   
+          ),
+          headerTitleAlign: 'center',
+          headerStyle:{
+            backgroundColor:"#03487a"
+          },
+         
+        })}
+      />
+      <Stack.Screen name="SearchScreen" component={SearchScreen}  
+         options={({ navigation }) => ({
+          headerTitle: () => (
+            <View>
+                 <Image
+                    source={logo} 
+                    style={styles.logo}
+                  />
+           
+            </View>   
+          ),
+          headerTitleAlign: 'center',
+          headerStyle:{
+            backgroundColor:"#03487a"
+          },
+         
+        })}
+      />
+      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
+
+      
       <Stack.Screen name="Home" component={Home}  
           options={({ navigation }) => ({
             headerTitle: () => (
@@ -43,44 +102,8 @@ const App = () =>{
           })}
       />
 
-      <Stack.Screen name="SearchScreen" component={SearchScreen}  
-         options={({ navigation }) => ({
-          headerTitle: () => (
-            <View>
-                 <Image
-                    source={logo} 
-                    style={styles.logo}
-                  />
-           
-            </View>   
-          ),
-          headerTitleAlign: 'center',
-          headerStyle:{
-            backgroundColor:"#03487a"
-          },
-         
-        })}
-      />
+     
 
-      <Stack.Screen name="ClasseScreen" component={ClasseScreen}  
-         options={({ navigation }) => ({
-          headerTitle: () => (
-            <View>
-                 <Image
-                    source={logo} 
-                    style={styles.logo}
-                  />
-            </View>   
-          ),
-          headerTitleAlign: 'center',
-          headerStyle:{
-            backgroundColor:"#03487a"
-          },
-         
-        })}
-      
-      />
-      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
       
       <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false }}/>
       <Stack.Screen name="UpdateScreen" component={UpdateScreen} 

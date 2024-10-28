@@ -127,15 +127,16 @@ const SearchScreen = ({navigation}) =>{
             <RadioButton.Group
               onValueChange={onChange} 
               value={value}
+              
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10  }}>
-                  <RadioButton value="1" />
-                  <Text>Sim</Text>
+                  <RadioButton color="gray" value="1" />
+                  <Text style={styles.text}>Sim</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <RadioButton value="0" />
-                  <Text>Não</Text>
+                  <RadioButton color="gray" value="0" />
+                  <Text  style={styles.text}>Não</Text>
                 </View>
               </View>
             </RadioButton.Group>
@@ -210,12 +211,13 @@ const styles = StyleSheet.create({
       marginTop:40,
       marginRight:300,
       fontSize: 16,
-     
+      color:"gray",
     },
 
     bolsa:{
       marginRight:210,
       marginTop:30,
+      color:"gray"
       
     },
     picker: {
@@ -225,5 +227,10 @@ const styles = StyleSheet.create({
       color:'#19bdee',
     
     },
+
+    text:{
+      color:'#19bdee',
+
+    }
 
 })
