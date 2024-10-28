@@ -102,7 +102,6 @@ const ClasseScreen = ({navigation}) =>{
             console.log(error);
            
         });
-        
     }
 
 
