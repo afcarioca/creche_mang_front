@@ -8,91 +8,23 @@ import { useState } from "react";
 import { DataTable } from 'react-native-paper'; 
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor:"#fff",
-       
-      },
 
-      image:{
-        width: 150,
-        height: 150,
-      
-      },
-    
-      input: {
-        width: '100%',
-        height: 50,
-        borderColor: '#19bdee',
-        borderBottomWidth:2,       
-       
-        paddingLeft: 10,
-        marginTop: 30,
-        backgroundColor: '#fff',
-        color:"#19bdee"
-    
-      },
-    
-      erros:{
-        color:"red",
-        fontWeight: "bold"
-      },
-      
-      button: {
-        width: '85%',
-        height: 50,
-        backgroundColor: '#19bdee',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 8,
-        marginTop:30,
-
-      },
-
-      cadastro:{
-        color:"#fff",
-        marginTop:30,
-      },
-
-      label: {
-        fontSize: 16,
-        marginBottom: 10,
-        marginTop:40,
-        marginRight:300,
-        fontSize: 16,
-       
-      },
-
-      bolsa:{
-        marginRight:210,
-        marginTop:30,
-        
-      },
-      picker: {
-        height: 50,
-        width: '100%',
-        marginTop:10,
-        color:'#19bdee',
-      
-      },
-
-})
 
 const schema = yup.object().shape({
     turma: yup.string().required('Campo turma obrigatório'),
 });
 const ClasseScreen = ({navigation}) =>{
-    const {control, handleSubmit, formState:{errors}} = useForm({
+    const {control, handleSubmit,reset, formState:{errors}} = useForm({
         resolver: yupResolver(schema),
     });
 
     const [alunos, setalunos] = useState([])
 
+
+
     const onSubmit = (dados) => {
         console.log(dados)
-        axios.post("http://192.168.42.77:8000/api/form/",dados,{
+        axios.post("http://192.168.0.19:8000/api/form/",dados,{
             withCredentials: true
         })
         .then(response => {
@@ -103,6 +35,13 @@ const ClasseScreen = ({navigation}) =>{
            
         });
     }
+
+
+    const handleAlunoSelect = (idAluno) => {
+        setalunos([]);
+        reset();  
+        navigation.navigate("CardScreen", { idAluno });
+    };
 
 
     return (
@@ -144,7 +83,7 @@ const ClasseScreen = ({navigation}) =>{
                 renderItem={({ item }) => (
                     
                     <DataTable.Row> 
-                            <DataTable.Cell onPress={() => navigation.navigate("CardScreen", {idAluno: item.id})}>{item.nome}</DataTable.Cell> 
+                            <DataTable.Cell onPress={() => handleAlunoSelect(item.id)}>{item.nome}</DataTable.Cell> 
                     </DataTable.Row> 
                 )}
             />
@@ -155,3 +94,24 @@ const ClasseScreen = ({navigation}) =>{
 }
 
 export default ClasseScreen;
+
+const styles = StyleSheet.create({
+
+    label: {
+      fontSize: 16,
+      marginBottom: 10,
+      marginTop:40,
+      marginRight:300,
+      fontSize: 16,
+     
+    },
+
+    picker: {
+      height: 50,
+      width: '100%',
+      marginTop:10,
+      color:'#19bdee',
+    
+    },
+
+})

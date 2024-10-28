@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity,KeyboardAvoidingView, ToastAndroid   } from "react-native";
+import { Text, TextInput, StyleSheet,TouchableOpacity, KeyboardAvoidingView, ToastAndroid   } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -6,53 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor:"#03487a",
-        
-       
-      },
 
-    
-      input: {
-        width: '80%',
-        height: 50,
-        borderColor: '#19bdee',
-        borderBottomWidth:2,
-        paddingLeft: 10,
-        marginBottom: 10,
-        backgroundColor: '#03487a',
-        color:"#fff",
-
-    
-      },
-      inputNome:{
-            marginTop: 0,
-      },
-      erros:{
-        color:"red",
-        fontWeight: "bold"
-      },
-      button: {
-        width: '85%',
-        height: 50,
-       
-        backgroundColor: '#19bdee',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 8,
-        marginTop:35
-      },
-
-      login:{
-        color:"#fff",
-        marginTop:30,
-      }
-
-})
 
 const schema = yup.object().shape({
     username: yup.string().required('Campo nome obrigatório'),
@@ -71,7 +25,7 @@ const CadastroScreen = ({navigation}) =>{
         resolver: yupResolver(schema)
     });
 
-    const[error, setError] = useState("")
+    const[erro, setErro] = useState("")
 
     const onSubmit = (dados) =>{
         axios.post("http://192.168.42.77:8000/api/register/",dados,{
@@ -82,12 +36,11 @@ const CadastroScreen = ({navigation}) =>{
             navigation.navigate("LoginScreen");
           })
           .catch(error => {
-            
-            setError(error.response.data.message)
+            setErro(error.response.data.message)
         });
         
         setTimeout(() => {
-            setError('');
+            setErro('');
     }, 5000);
        
      
@@ -114,7 +67,7 @@ const CadastroScreen = ({navigation}) =>{
                 rules={{required: true}}
                 defaultValue=""
             />
-            {errors.username && <Text style={styles.erros}>{errors.username.message}</Text>}
+            {errors.username && <Text style={styles.erro}>{errors.username.message}</Text>}
 
        
             <Controller 
@@ -132,7 +85,7 @@ const CadastroScreen = ({navigation}) =>{
                 rules={{required: true}}
                 defaultValue=""
             />
-            {errors.email && <Text style={styles.erros}>{errors.email.message}</Text>}
+            {errors.email && <Text style={styles.erro}>{errors.email.message}</Text>}
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) =>(
@@ -149,7 +102,7 @@ const CadastroScreen = ({navigation}) =>{
                     rules={{required: true}}
                     defaultValue=""
                 />
-            {errors.password1 && <Text style={styles.erros}>{errors.password1.message}</Text>}  
+            {errors.password1 && <Text style={styles.erro}>{errors.password1.message}</Text>}  
             
             <Controller
                 control={control}
@@ -167,7 +120,7 @@ const CadastroScreen = ({navigation}) =>{
                     rules={{required: true}}
                     defaultValue=""
                 />
-            {errors.password2 && <Text style={styles.erros}>{errors.password2.message}</Text>}
+            {errors.password2 && <Text style={styles.erro}>{errors.password2.message}</Text>}
 
             
             <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
@@ -175,9 +128,55 @@ const CadastroScreen = ({navigation}) =>{
             </TouchableOpacity>
             <Text style={styles.login} onPress={() =>   navigation.navigate("LoginScreen")}>Login</Text>
 
-            <Text style={[styles.erros, styles.erro]}>{error}</Text> 
+            <Text style={[styles.erro, styles.erro]}>{erro}</Text> 
         </KeyboardAvoidingView>
     );
 }
 
 export default CadastroScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:"#03487a",
+        
+       
+      },
+
+      input: {
+        width: '80%',
+        height: 50,
+        borderColor: '#19bdee',
+        borderBottomWidth:2,
+        paddingLeft: 10,
+        marginBottom: 10,
+        backgroundColor: '#03487a',
+        color:"#fff",
+
+      },
+      inputNome:{
+            marginTop: 0,
+      },
+      erro:{
+        color:"red",
+        fontWeight: "bold"
+      },
+      button: {
+        width: '85%',
+        height: 50,
+       
+        backgroundColor: '#19bdee',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
+        marginTop:35
+      },
+
+      login:{
+        color:"#fff",
+        marginTop:30,
+      }
+
+})

@@ -8,77 +8,6 @@ import { RadioButton } from 'react-native-paper';
 import axios from "axios";
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor:"#fff",
-       
-      },
-
-      image:{
-        width: 150,
-        height: 150,
-      
-      },
-    
-      input: {
-        width: '100%',
-        height: 50,
-        borderColor: '#19bdee',
-        borderBottomWidth:2,       
-       
-        paddingLeft: 10,
-        marginTop: 30,
-        backgroundColor: '#fff',
-        color:"#19bdee"
-    
-      },
-    
-      erros:{
-        color:"red",
-        fontWeight: "bold"
-      },
-      
-      button: {
-        width: '85%',
-        height: 50,
-        backgroundColor: '#19bdee',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 8,
-        marginTop:30,
-
-      },
-
-      cadastro:{
-        color:"#fff",
-        marginTop:30,
-      },
-
-      label: {
-        fontSize: 16,
-        marginBottom: 10,
-        marginTop:40,
-        marginRight:300,
-        fontSize: 16,
-       
-      },
-
-      bolsa:{
-        marginRight:210,
-        marginTop:30,
-        
-      },
-      picker: {
-        height: 50,
-        width: '100%',
-        marginTop:10,
-        color:'#19bdee',
-      
-      },
-
-})
 
 
 const schema = yup.object().shape({
@@ -103,7 +32,7 @@ const SearchScreen = ({navigation}) =>{
         bolsa_familia: parseInt(dados.bolsa_familia, 10),
       };
         
-        axios.post("http://192.168.42.77:8000/api/form/",formattedData,{
+        axios.post("http://192.168.0.19:8000/api/form/",formattedData,{
               withCredentials: true
           })
           .then(response => {
@@ -226,3 +155,75 @@ const SearchScreen = ({navigation}) =>{
 }
 
 export default SearchScreen;
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      alignItems: 'center',
+      backgroundColor:"#fff",
+     
+    },
+
+    image:{
+      width: 150,
+      height: 150,
+    
+    },
+  
+    input: {
+      width: '100%',
+      height: 50,
+      borderColor: '#19bdee',
+      borderBottomWidth:2,       
+     
+      paddingLeft: 10,
+      marginTop: 30,
+      backgroundColor: '#fff',
+      color:"#19bdee"
+  
+    },
+  
+    erros:{
+      color:"red",
+      fontWeight: "bold"
+    },
+    
+    button: {
+      width: '85%',
+      height: 50,
+      backgroundColor: '#19bdee',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 8,
+      marginTop:30,
+
+    },
+
+    cadastro:{
+      color:"#fff",
+      marginTop:30,
+    },
+
+    label: {
+      fontSize: 16,
+      marginBottom: 10,
+      marginTop:40,
+      marginRight:300,
+      fontSize: 16,
+     
+    },
+
+    bolsa:{
+      marginRight:210,
+      marginTop:30,
+      
+    },
+    picker: {
+      height: 50,
+      width: '100%',
+      marginTop:10,
+      color:'#19bdee',
+    
+    },
+
+})

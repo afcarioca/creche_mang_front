@@ -10,77 +10,7 @@ import { useRoute } from '@react-navigation/native';
 
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor:"#fff",
-       
-      },
 
-      image:{
-        width: 150,
-        height: 150,
-      
-      },
-    
-      input: {
-        width: '100%',
-        height: 50,
-        borderColor: '#19bdee',
-        borderBottomWidth:2,       
-       
-        paddingLeft: 10,
-        marginTop: 30,
-        backgroundColor: '#fff',
-        color:"#19bdee"
-    
-      },
-    
-      erros:{
-        color:"red",
-        fontWeight: "bold"
-      },
-      
-      button: {
-        width: '85%',
-        height: 50,
-        backgroundColor: '#19bdee',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 8,
-        marginTop:30,
-
-      },
-
-      cadastro:{
-        color:"#fff",
-        marginTop:30,
-      },
-
-      label: {
-        fontSize: 16,
-        marginBottom: 10,
-        marginTop:40,
-        marginRight:300,
-        fontSize: 16,
-       
-      },
-
-      bolsa:{
-        marginRight:210,
-        marginTop:30,
-        
-      },
-      picker: {
-        height: 50,
-        width: '100%',
-        marginTop:10,
-        color:'#19bdee',
-      
-      },
-
-})
 
 const schema = yup.object().shape({
     nome: yup.string().required('Campo nome obrigatório'),
@@ -126,7 +56,7 @@ const UpdateScreen = ({navigation}) =>{
   
     const[error, setError] = useState("")
     useEffect(() => {
-        axios.get(`http://192.168.42.77:8000/api/form/${idAluno}/`,{
+        axios.get(`http://192.168.0.19:8000/api/form/${idAluno}/`,{
             withCredentials: true
         })
         .then(response => {
@@ -166,7 +96,7 @@ const UpdateScreen = ({navigation}) =>{
     const onSubmit = async (dados) =>{
         dados["bolsa_familia"] = parseInt(dados.bolsa_familia);
         
-        await axios.put(`http://192.168.42.77:8000/api/form/${idAluno}/`,dados,{
+        await axios.put(`http://192.168.0.19:8000/api/form/${idAluno}/`,dados,{
             withCredentials: true
         })
         .then(response => {
@@ -277,3 +207,74 @@ const UpdateScreen = ({navigation}) =>{
 }
 
 export default UpdateScreen;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor:"#fff",
+       
+      },
+
+      image:{
+        width: 150,
+        height: 150,
+      
+      },
+    
+      input: {
+        width: '100%',
+        height: 50,
+        borderColor: '#19bdee',
+        borderBottomWidth:2,       
+       
+        paddingLeft: 10,
+        marginTop: 30,
+        backgroundColor: '#fff',
+        color:"#19bdee"
+    
+      },
+    
+      erros:{
+        color:"red",
+        fontWeight: "bold"
+      },
+      
+      button: {
+        width: '85%',
+        height: 50,
+        backgroundColor: '#19bdee',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
+        marginTop:30,
+
+      },
+
+      cadastro:{
+        color:"#fff",
+        marginTop:30,
+      },
+
+      label: {
+        fontSize: 16,
+        marginBottom: 10,
+        marginTop:40,
+        marginRight:300,
+        fontSize: 16,
+       
+      },
+
+      bolsa:{
+        marginRight:210,
+        marginTop:30,
+        
+      },
+      picker: {
+        height: 50,
+        width: '100%',
+        marginTop:10,
+        color:'#19bdee',
+      
+      },
+
+})
