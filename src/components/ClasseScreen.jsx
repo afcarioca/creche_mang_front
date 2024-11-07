@@ -6,7 +6,7 @@ import { Picker } from '@react-native-picker/picker';
 import axios from "axios";
 import { useState } from "react";
 import { DataTable } from 'react-native-paper'; 
-
+import {API_URL} from '@env';
 
 
 
@@ -24,7 +24,7 @@ const ClasseScreen = ({navigation}) =>{
 
     const onSubmit = (dados) => {
         console.log(dados)
-        axios.post("http://192.168.0.21:8000/api/form/",dados,{
+        axios.post(`${API_URL}/form/`,dados,{
             withCredentials: true
         })
         .then(response => {

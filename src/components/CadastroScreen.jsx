@@ -28,7 +28,7 @@ const CadastroScreen = ({navigation}) =>{
     const[erro, setErro] = useState("")
 
     const onSubmit = (dados) =>{
-        axios.post("http://192.168.42.77:8000/api/register/",dados,{
+        axios.post("http://192.168.0.13:8000/api/register/",dados,{
             withCredentials: true
         })
         .then(response => {

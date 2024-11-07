@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
 import { RadioButton } from 'react-native-paper';
 import axios from "axios";
+import {API_URL} from '@env';
 
 
 
@@ -32,7 +33,7 @@ const SearchScreen = ({navigation}) =>{
         bolsa_familia: parseInt(dados.bolsa_familia, 10),
       };
         
-        axios.post("http://192.168.0.19:8000/api/form/",formattedData,{
+        axios.post(`${API_URL}/form/`,formattedData,{
               withCredentials: true
           })
           .then(response => {
@@ -49,9 +50,9 @@ const SearchScreen = ({navigation}) =>{
               setError('');
       }, 5000);
    
-      
-     
     }
+
+    console.log(API_URL);
     return(
       <KeyboardAvoidingView style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

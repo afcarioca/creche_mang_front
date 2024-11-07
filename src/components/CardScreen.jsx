@@ -7,6 +7,7 @@ import { useCallback } from 'react';
 import imgAluno from "../img/aluno.png";
 import update from "../img/update.png";
 import lixeira from "../img/lixeira.png";
+import {API_URL} from '@env';
 
 
 
@@ -36,7 +37,7 @@ const CardScreen = ({navigation}) =>{
         useCallback(() => {
             const fetch = async () => {
                 try {
-                    const response = await axios.get(`http://192.168.0.21:8000/api/form/${idAluno}/`, {
+                    const response = await axios.get(`${API_URL}/form/${idAluno}/`, {
                         withCredentials: true
                     });
                     setInf({
@@ -66,7 +67,7 @@ const CardScreen = ({navigation}) =>{
     const remover = () =>{
         const fetch = async () => {
             try {
-                const response = await axios.delete(`http://192.168.0.21:8000/api/form/${idAluno}/`, {
+                const response = await axios.delete(`${API_URL}/form/${idAluno}/`, {
                     withCredentials: true
                 });
                 setInf({

@@ -25,7 +25,8 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
-      
+      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
+
       <Stack.Screen name="ClasseScreen" component={ClasseScreen}  
          options={({ navigation }) => ({
           headerTitle: () => (
@@ -80,7 +81,6 @@ const App = () =>{
          
         })}
       />
-      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
 
       
       <Stack.Screen name="Home" component={Home}  

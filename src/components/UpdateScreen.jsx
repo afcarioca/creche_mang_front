@@ -7,7 +7,7 @@ import { Picker } from '@react-native-picker/picker';
 import { RadioButton } from 'react-native-paper';
 import axios from "axios";
 import { useRoute } from '@react-navigation/native';
-
+import {API_URL} from '@env';
 
 
 
@@ -56,7 +56,7 @@ const UpdateScreen = ({navigation}) =>{
   
     const[error, setError] = useState("")
     useEffect(() => {
-        axios.get(`http://192.168.0.21:8000/api/form/${idAluno}/`,{
+        axios.get(`${API_URL}/form/${idAluno}/`,{
             withCredentials: true
         })
         .then(response => {
@@ -96,7 +96,7 @@ const UpdateScreen = ({navigation}) =>{
     const onSubmit = async (dados) =>{
         dados["bolsa_familia"] = parseInt(dados.bolsa_familia);
         
-        await axios.put(`http://192.168.0.21:8000/api/form/${idAluno}/`,dados,{
+        await axios.put(`${API_URL}/form/${idAluno}/`,dados,{
             withCredentials: true
         })
         .then(response => {

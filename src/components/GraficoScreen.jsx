@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
-
+import {API_URL} from '@env';
 
 const screenWidth = Dimensions.get("window").width;
 const schema = yup.object().shape({
@@ -37,7 +37,7 @@ const GraficoScreen = () =>{
 
     const onSubmit = async (data) =>{
         console.log(data);
-            await axios.post("http://192.168.0.21:8000/api/grafico/", data,{
+            await axios.post(`${API_URL}/grafico/`, data,{
                 withCredentials: true,
             }).then(response => {
                 let jsonString = response.data["data"].replace(/'/g, '"')  

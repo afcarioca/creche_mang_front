@@ -5,6 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import { useState} from "react";
 import axios from "axios";
 import logo from "../img/logo.png";
+import {API_URL} from '@env';
 
 
 const schema = yup.object().shape({
@@ -22,7 +23,7 @@ const LoginScreen = ({navigation}) =>{
     const [erro, setErro] = useState("")
     
     const onSubmit = (dados) =>{
-        axios.post("http://192.168.0.21:8000/api/login/",dados,{
+        axios.post(`${API_URL}/login/`,dados,{
             withCredentials: true
         })
         .then(response => {
@@ -37,7 +38,6 @@ const LoginScreen = ({navigation}) =>{
                 setErro('');
         }, 5000);
     }
-
     return(
         <View style={styles.container}>
             <Image source={logo} 

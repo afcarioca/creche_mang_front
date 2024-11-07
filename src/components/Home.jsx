@@ -4,7 +4,6 @@ import usuarios from "../img/usuarios.png";
 import graficos from "../img/graficos.png";
 
 
-
 const Home = ({navigation}) =>{
     return(
         <View  style={styles.container}>
