@@ -5,7 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import axios from "axios";
 import { useState } from "react";
 import {aberto, oculto} from "../img/";
-
+import {API_URL} from '@env';
 
 
 const schema = yup.object().shape({
@@ -21,7 +21,7 @@ const schema = yup.object().shape({
     });
 
 const CadastroScreen = ({navigation}) =>{
-    const {control, handleSubmit, formState:{errors}} = useForm({
+    const {control, handleSubmit, reset, formState:{errors}} = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -31,12 +31,13 @@ const CadastroScreen = ({navigation}) =>{
     const[erro, setErro] = useState("")
 
     const onSubmit = (dados) =>{
-        axios.post("http://192.168.0.13:8000/api/register/",dados,{
+        axios.post(`${API_URL}/register/`,dados,{
             withCredentials: true
         })
         .then(response => {
             ToastAndroid.show('Cadastrado com sucesso!', ToastAndroid.SHORT);
             navigation.navigate("LoginScreen");
+            reset();
           })
           .catch(error => {
             setErro(error.response.data.message)
@@ -54,6 +55,11 @@ const CadastroScreen = ({navigation}) =>{
     }
     const isViPassword2 = () =>{
         setViPassword2(!viPassword2)
+    }
+
+    const backToLogin = () =>{
+        navigation.navigate("LoginScreen");
+        reset();
     }
 
     return(
@@ -156,7 +162,7 @@ const CadastroScreen = ({navigation}) =>{
             <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                         <Text >Cadastrar</Text>
             </TouchableOpacity>
-            <Text style={styles.login} onPress={() =>   navigation.navigate("LoginScreen")}>Login</Text>
+            <Text style={styles.login} onPress={backToLogin}>Login</Text>
 
             <Text style={[styles.erro, styles.erro]}>{erro}</Text> 
         </KeyboardAvoidingView>

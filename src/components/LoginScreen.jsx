@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 
 
 const LoginScreen = ({navigation}) =>{
-    const {control, handleSubmit, formState:{errors}} = useForm({
+    const {control, handleSubmit, reset, formState:{errors}} = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -32,6 +32,7 @@ const LoginScreen = ({navigation}) =>{
         .then(response => {
             ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
             navigation.navigate("Home");
+            reset();
           })
           .catch(error => {
             setErro("Login Inválido");
@@ -45,7 +46,11 @@ const LoginScreen = ({navigation}) =>{
     const isVisivel = () =>{
         setVisibilidade(!visibilidade);
     }
-   
+    
+    const gotoCadastro = () =>{
+        navigation.navigate("CadastroScreen")
+        reset();
+    }
 
     return(
         <View style={styles.container}>
@@ -101,7 +106,7 @@ const LoginScreen = ({navigation}) =>{
                         <Text>Entrar</Text>
             </TouchableOpacity>
             
-            <Text style={styles.cadastro} onPress={() => navigation.navigate("CadastroScreen")}>Cadastrar</Text>
+            <Text style={styles.cadastro} onPress={gotoCadastro}>Cadastrar</Text>
             <Text style={[styles.erro, styles.erro]}>{erro}</Text>    
         </View>
     );
