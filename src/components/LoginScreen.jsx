@@ -23,6 +23,8 @@ const LoginScreen = ({navigation}) =>{
     });
 
     const [visibilidade, setVisibilidade] = useState(false)
+    const [loading, setLoading] = useState(false);
+
     const [erro, setErro] = useState("")
     
     const onSubmit = (dados) =>{
@@ -30,9 +32,15 @@ const LoginScreen = ({navigation}) =>{
             withCredentials: true
         })
         .then(response => {
-            ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
-            navigation.navigate("Home");
-            reset();
+            setLoading(true);
+            
+            setTimeout(() => {
+                setLoading(false);
+                ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
+                navigation.navigate("Home");
+                reset();
+              }, 1000);
+         
           })
           .catch(error => {
             setErro("Login Inválido");
@@ -51,6 +59,14 @@ const LoginScreen = ({navigation}) =>{
         navigation.navigate("CadastroScreen")
         reset();
     }
+
+    if (loading) {
+        return (
+          <View style={styles.container}>
+            <ActivityIndicator size="large" color="#fff" />
+          </View>
+        );
+      }
 
     return(
         <View style={styles.container}>

@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, ScrollView} from "react-native";
 import pesquisa from "../img/pesquisa.png";
 import usuarios from "../img/usuarios.png";
 import graficos from "../img/graficos.png";
