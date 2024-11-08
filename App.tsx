@@ -38,8 +38,9 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="HomeScreen" component={MyTabs}  options={({ navigation }) => ({headerShown: false,animation: 'none' })}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false, animation: 'none'  }} />
+
+      <Stack.Screen name="HomeScreen" component={MyTabs}  options={({ navigation }) => ({headerShown: false,animation: 'none' })}/>
       <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false,  animation: 'none'  }}/>
      
 

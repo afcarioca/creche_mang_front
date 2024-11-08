@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet,TouchableOpacity, Image, ToastAndroid, ActivityIndicator} from "react-native";
+import { KeyboardAvoidingView, View, Text, TextInput, StyleSheet,TouchableOpacity, Image, ToastAndroid, ActivityIndicator} from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -69,7 +69,9 @@ const LoginScreen = ({navigation}) =>{
       }
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
             <Image source={logo} 
                     style={styles.imagem} />
 
@@ -124,7 +126,7 @@ const LoginScreen = ({navigation}) =>{
             
             <Text style={styles.cadastro} onPress={gotoCadastro}>Cadastrar</Text>
             <Text style={[styles.erro, styles.erro]}>{erro}</Text>    
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -146,8 +148,8 @@ const styles = StyleSheet.create({
       },
 
       imagem:{
-        width: 150,
-        height: 150,
+        width: 130,
+        height: 130,
       
       },
     
