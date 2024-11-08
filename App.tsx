@@ -1,14 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from "./src/components/LoginScreen";
-import HomeScreen from "./HomeScreen";
 import CadastroScreen from "./src/components/CadastroScreen";
-import ViewScreen from "./ViewScreen";
-import TextScreen from "./TextScreen";
-import ImageScreen from "./ImageScreen";
-import TextInputScreen from "./TextInputScreen";
-import ScrollScreen from "./ScrollScreen";
-import GoogleScreen from "./GoogleScreen";
 import UploadScreen from "./src/components/UploadScreen";
 import Home from "./src/components/Home";
 import SearchScreen from "./src/components/SearchScreen";
@@ -88,7 +81,7 @@ const App = () =>{
             headerTitle: () => (
               <View>
                    <Image
-                      source={require('./logo.png')} 
+                      source={logo} 
                       style={styles.logo}
                     />
              
@@ -151,14 +144,6 @@ const App = () =>{
       
     
 
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="GoogleScreen" component={GoogleScreen} />
-      
-        <Stack.Screen name="ViewScreen" component={ViewScreen} />
-        <Stack.Screen name="TextScreen" component ={TextScreen} />
-        <Stack.Screen name ="ImageScreen" component = {ImageScreen} />
-        <Stack.Screen name ="TextInputScreen" component = {TextInputScreen} />
-        <Stack.Screen name ="ScrollScreen" component = {ScrollScreen} />
       </Stack.Navigator>
   </NavigationContainer>
   );
