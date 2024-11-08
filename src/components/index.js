@@ -1,0 +1,9 @@
+export { default as LoginScreen } from './LoginScreen';
+export { default as CadastroScreen } from './CadastroScreen';
+export { default as UploadScreen } from './UploadScreen';
+export { default as Home } from './Home';
+export { default as SearchScreen } from './SearchScreen';
+export { default as CardScreen } from './CardScreen';
+export { default as UpdateScreen } from './UpdateScreen';
+export { default as ClasseScreen } from './ClasseScreen';
+export { default as GraficoScreen } from './GraficoScreen';

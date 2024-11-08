@@ -1,10 +1,10 @@
-import { Text, TextInput, StyleSheet,TouchableOpacity, KeyboardAvoidingView, ToastAndroid   } from "react-native";
+import { View, Text, TextInput, StyleSheet,TouchableOpacity, KeyboardAvoidingView, ToastAndroid, Image   } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import axios from "axios";
 import { useState } from "react";
-
+import {aberto, oculto} from "../img/";
 
 
 
@@ -24,6 +24,9 @@ const CadastroScreen = ({navigation}) =>{
     const {control, handleSubmit, formState:{errors}} = useForm({
         resolver: yupResolver(schema)
     });
+
+    const [viPassword1, setViPassword1] = useState(false)
+    const [viPassword2, setViPassword2] = useState(false)
 
     const[erro, setErro] = useState("")
 
@@ -46,6 +49,12 @@ const CadastroScreen = ({navigation}) =>{
      
     }
 
+    const isViPassword1 = () =>{
+        setViPassword1(!viPassword1)
+    }
+    const isViPassword2 = () =>{
+        setViPassword2(!viPassword2)
+    }
 
     return(
         <KeyboardAvoidingView style={styles.container}
@@ -86,6 +95,8 @@ const CadastroScreen = ({navigation}) =>{
                 defaultValue=""
             />
             {errors.email && <Text style={styles.erro}>{errors.email.message}</Text>}
+            <View style={styles.inputContainer}>
+
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) =>(
@@ -96,14 +107,24 @@ const CadastroScreen = ({navigation}) =>{
                         secureTextEntry
                         placeholder="Insira a senha"
                         placeholderTextColor="#888"
+                        secureTextEntry={!viPassword1}
+
                     />
                 )}
                     name="password1"
                     rules={{required: true}}
                     defaultValue=""
                 />
+              <TouchableOpacity onPress={isViPassword1} style={styles.icon}>
+                    <Image
+                    source={viPassword1 ? aberto : oculto} 
+                    style={styles.iconImage}
+                />
+                </TouchableOpacity>
+            </View>
             {errors.password1 && <Text style={styles.erro}>{errors.password1.message}</Text>}  
-            
+            <View style={styles.inputContainer}>
+
             <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) =>(
@@ -114,12 +135,21 @@ const CadastroScreen = ({navigation}) =>{
                         secureTextEntry
                         placeholder="Insira a senha novamente"
                         placeholderTextColor="#888"
+                        secureTextEntry={!viPassword2}
+
                     />
                 )}
                     name="password2"
                     rules={{required: true}}
                     defaultValue=""
                 />
+                <TouchableOpacity onPress={isViPassword2} style={styles.icon}>
+                    <Image
+                    source={viPassword2 ? aberto : oculto} 
+                    style={styles.iconImage}
+                />
+                </TouchableOpacity>
+            </View>
             {errors.password2 && <Text style={styles.erro}>{errors.password2.message}</Text>}
 
             
@@ -143,6 +173,13 @@ const styles = StyleSheet.create({
         backgroundColor:"#03487a",
         
        
+      },
+
+      
+      inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'relative',
       },
 
       input: {
@@ -176,7 +213,19 @@ const styles = StyleSheet.create({
 
       login:{
         color:"#fff",
-        marginTop:30,
-      }
+        marginTop:50,
+      },
+
+      icon:{
+        position: 'absolute',
+        right: 10,
+        top: 10,
+        padding: 5,
+      },
+
+      iconImage: {
+        width: 25,
+        height: 25,
+      },
 
 })

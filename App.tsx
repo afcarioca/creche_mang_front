@@ -1,15 +1,7 @@
+import { Image, StyleSheet, View} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from "./src/components/LoginScreen";
-import CadastroScreen from "./src/components/CadastroScreen";
-import UploadScreen from "./src/components/UploadScreen";
-import Home from "./src/components/Home";
-import SearchScreen from "./src/components/SearchScreen";
-import CardScreen from "./src/components/CardScreen";
-import UpdateScreen from "./src/components/UpdateScreen";
-import ClasseScreen from "./src/components/ClasseScreen";
-import GraficoScreen from "./src/components/GraficoScreen";
-import { Image, StyleSheet, View} from "react-native";
+import { LoginScreen, CadastroScreen, UploadScreen, Home, SearchScreen, CardScreen, UpdateScreen, ClasseScreen, GraficoScreen} from './src/components/';
 import logo from "./src/img/logo.png";
 
 
@@ -18,7 +10,8 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false }} />
+      <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false,  animation: 'none'  }}/>
+      <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false, animation: 'none'  }} />
 
       <Stack.Screen name="ClasseScreen" component={ClasseScreen}  
          options={({ navigation }) => ({
@@ -98,7 +91,6 @@ const App = () =>{
      
 
       
-      <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false }}/>
       <Stack.Screen name="UpdateScreen" component={UpdateScreen} 
         options={({ navigation }) => ({
           headerTitle: () => (
