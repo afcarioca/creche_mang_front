@@ -36,7 +36,6 @@ const GraficoScreen = () =>{
     };
 
     const onSubmit = async (data) =>{
-        console.log(data);
             await axios.post(`${API_URL}/grafico/`, data,{
                 withCredentials: true,
             }).then(response => {

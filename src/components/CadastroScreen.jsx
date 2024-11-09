@@ -27,7 +27,8 @@ const CadastroScreen = ({navigation}) =>{
 
     const [viPassword1, setViPassword1] = useState(false)
     const [viPassword2, setViPassword2] = useState(false)
-
+    const [etapa, setEtapa] = useState(1);
+    const totalEtapas = 2;
     const[erro, setErro] = useState("")
 
     const onSubmit = (dados) =>{
@@ -50,6 +51,11 @@ const CadastroScreen = ({navigation}) =>{
      
     }
 
+    const handleProxima = () =>  setEtapa(anterior => Math.min(etapa + 1, totalEtapas));
+    const handleAnterior = () => setEtapa(anterior => Math.max(etapa - 1, 1));
+
+   
+
     const isViPassword1 = () =>{
         setViPassword1(!viPassword1)
     }
@@ -65,106 +71,138 @@ const CadastroScreen = ({navigation}) =>{
     return(
         <KeyboardAvoidingView style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-        >
-             <Controller 
-                control = {control}
-                render ={({field: {onChange, onBlur, value}}) =>(
-                    <TextInput  style={[styles.input, styles.inputNome]}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        placeholder="Insira o nome"
-                        placeholderTextColor="#888"
-                    />
-                )}
-                name="username"
-                rules={{required: true}}
-                defaultValue=""
-            />
-            {errors.username && <Text style={styles.erro}>{errors.username.message}</Text>}
+           
+        >   
+              
 
-       
-            <Controller 
-                control = {control}
-                render ={({field: {onChange, onBlur, value}}) =>(
-                    <TextInput  style={[styles.input, styles.inputEmail]}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        placeholder="Insira o e-mail"
-                        placeholderTextColor="#888"
-                    />
-                )}
-                name="email"
-                rules={{required: true}}
-                defaultValue=""
-            />
-            {errors.email && <Text style={styles.erro}>{errors.email.message}</Text>}
-            <View style={styles.inputContainer}>
-
-            <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) =>(
-                    <TextInput style={styles.input}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        secureTextEntry
-                        placeholder="Insira a senha"
-                        placeholderTextColor="#888"
-                        secureTextEntry={!viPassword1}
-
-                    />
-                )}
-                    name="password1"
+             
+              
+                {etapa === 1 && ( <>
+                
+                <View  style={styles.inputContainer}>
+                <Controller 
+                    control = {control}
+                    render ={({field: {onChange, onBlur, value}}) =>(
+                        <TextInput  style={[styles.input, styles.inputNome]}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                            placeholder="Insira o nome"
+                            placeholderTextColor="#888"
+                        />
+                    )}
+                    name="username"
                     rules={{required: true}}
                     defaultValue=""
                 />
-              <TouchableOpacity onPress={isViPassword1} style={styles.icon}>
-                    <Image
-                    source={viPassword1 ? aberto : oculto} 
-                    style={styles.iconImage}
-                />
-                </TouchableOpacity>
-            </View>
-            {errors.password1 && <Text style={styles.erro}>{errors.password1.message}</Text>}  
-            <View style={styles.inputContainer}>
-
-            <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) =>(
-                    <TextInput style={styles.input}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        secureTextEntry
-                        placeholder="Insira a senha novamente"
-                        placeholderTextColor="#888"
-                        secureTextEntry={!viPassword2}
-
-                    />
-                )}
-                    name="password2"
+                {errors.username && <Text style={styles.erro}>{errors.username.message}</Text>}
+    
+           
+                <Controller 
+                    control = {control}
+                    render ={({field: {onChange, onBlur, value}}) =>(
+                        <TextInput  style={[styles.input, styles.inputEmail]}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                            placeholder="Insira o e-mail"
+                            placeholderTextColor="#888"
+                        />
+                    )}
+                    name="email"
                     rules={{required: true}}
                     defaultValue=""
                 />
-                <TouchableOpacity onPress={isViPassword2} style={styles.icon}>
-                    <Image
-                    source={viPassword2 ? aberto : oculto} 
-                    style={styles.iconImage}
-                />
-                </TouchableOpacity>
-            </View>
-            {errors.password2 && <Text style={styles.erro}>{errors.password2.message}</Text>}
+                {errors.email && <Text style={styles.erro}>{errors.email.message}</Text>}
+                </View>
+                </>
+                )}
+                {etapa === 2 && ( <>
+            <View style={styles.inputContainer}>
 
+                <Controller
+                    control={control}
+                    render={({field: {onChange, onBlur, value}}) =>(
+                        <TextInput style={styles.input}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                            secureTextEntry
+                            placeholder="Insira a senha"
+                            placeholderTextColor="#888"
+                            secureTextEntry={!viPassword1}
+
+                        />
+                    )}
+                        name="password1"
+                        rules={{required: true}}
+                        defaultValue=""
+                    />
+                <TouchableOpacity onPress={isViPassword1} style={styles.icon}>
+                        <Image
+                        source={viPassword1 ? aberto : oculto} 
+                        style={styles.iconImage}
+                    />
+                    </TouchableOpacity>
             
-            <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-                        <Text >Cadastrar</Text>
-            </TouchableOpacity>
-            <Text style={styles.login} onPress={backToLogin}>Login</Text>
+                {errors.password1 && <Text style={styles.erro}>{errors.password1.message}</Text>}  
+            </View> 
+            <View style={styles.inputContainer}>
+                <Controller
+                    control={control}
+                    render={({field: {onChange, onBlur, value}}) =>(
+                        <TextInput style={styles.input}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                            secureTextEntry
+                            placeholder="Insira a senha novamente"
+                            placeholderTextColor="#888"
+                            secureTextEntry={!viPassword2}
 
-            <Text style={[styles.erro, styles.erro]}>{erro}</Text> 
+                        />
+                    )}
+                        name="password2"
+                        rules={{required: true}}
+                        defaultValue=""
+                    />
+                    <TouchableOpacity onPress={isViPassword2} style={styles.icon}>
+                        <Image
+                        source={viPassword2 ? aberto : oculto} 
+                        style={styles.iconImage}
+                    />
+                    </TouchableOpacity>
+            
+                {errors.password2 && <Text style={styles.erro}>{errors.password2.message}</Text>}
+            </View> 
+
+
+            <Text style={[styles.erro, styles.erro]}>{erro}</Text>
+         
+                </>)}
+            
+                
+                <View style={styles.buttonContainer}>
+                    {etapa > 1 && (
+                    <TouchableOpacity onPress={handleAnterior} style={[styles.buttonBackNext, styles.backButton]}>
+                        <Text style={styles.backButtonText}>Retornar</Text>
+                    </TouchableOpacity>
+                    )}
+                    {etapa < totalEtapas ? (
+                    <TouchableOpacity onPress={handleProxima} style={[styles.buttonBackNext, styles.nextButton]}>
+                        <Text style={styles.nextButtonText}>Avançar</Text>
+                    </TouchableOpacity>
+                    ) : (
+                    <TouchableOpacity onPress={handleSubmit(onSubmit)} style={[styles.buttonBackNext, styles.nextButton]}>
+                        <Text style={styles.nextButtonText}>Cadastrar</Text>
+                    </TouchableOpacity>
+                    )}
+                </View>
+                <Text style={styles.login} onPress={backToLogin}>Login</Text>
+
+             
+         
+
         </KeyboardAvoidingView>
     );
 }
@@ -181,15 +219,14 @@ const styles = StyleSheet.create({
        
       },
 
-      
       inputContainer: {
-        flexDirection: 'row',
         alignItems: 'center',
         position: 'relative',
+        width: '80%',
       },
 
       input: {
-        width: '80%',
+        width: '100%',
         height: 50,
         borderColor: '#19bdee',
         borderBottomWidth:2,
@@ -199,22 +236,33 @@ const styles = StyleSheet.create({
         color:"#fff",
 
       },
-      inputNome:{
-            marginTop: 0,
-      },
+     
       erro:{
         color:"red",
         fontWeight: "bold"
       },
-      button: {
-        width: '85%',
-        height: 50,
-       
-        backgroundColor: '#19bdee',
-        justifyContent: 'center',
-        alignItems: 'center',
+      
+
+      buttonContainer: {
+        flexDirection: 'row',
+        
+      },
+
+      buttonBackNext:{
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         borderRadius: 8,
-        marginTop:35
+
+      },
+
+      backButton: {
+        backgroundColor: '#19bdee',
+        marginRight: 10,
+      },
+
+      nextButton: {
+        backgroundColor: '#19bdee',
+        marginRight: 10,
       },
 
       login:{
@@ -233,5 +281,39 @@ const styles = StyleSheet.create({
         width: 25,
         height: 25,
       },
+
+      stepContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+
+      stepIndicator:{
+        width: 35,
+        height: 35,
+        borderRadius: 20,
+        borderWidth: 2,
+        borderColor: '#E7E7E7',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+
+      activeStep: {
+        borderColor: 'pink',
+        backgroundColor: 'pink',
+      },
+
+      line: {
+        width: 20,
+        height: 2,
+        backgroundColor: '#E7E7E7',
+        marginHorizontal: 10,
+      },
+
+      activeLine: {
+        backgroundColor: 'pink',
+      },
+
+     
 
 })

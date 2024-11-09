@@ -95,7 +95,6 @@ const UpdateScreen = ({navigation}) =>{
 
     const onSubmit = async (dados) =>{
         dados["bolsa_familia"] = parseInt(dados.bolsa_familia);
-        
         await axios.put(`${API_URL}/form/${idAluno}/`,dados,{
             withCredentials: true
         })

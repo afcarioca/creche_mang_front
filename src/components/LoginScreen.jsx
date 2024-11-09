@@ -37,7 +37,7 @@ const LoginScreen = ({navigation}) =>{
             setTimeout(() => {
                 setLoading(false);
                 ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
-                navigation.navigate("Home");
+                navigation.navigate("HomeScreen");
                 reset();
               }, 1000);
          

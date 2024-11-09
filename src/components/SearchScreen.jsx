@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import { View, Text, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, ToastAndroid} from "react-native"
+import { ScrollView, View, Text, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, ToastAndroid} from "react-native"
 import { Controller, useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -20,7 +20,7 @@ const schema = yup.object().shape({
 });
 
 const SearchScreen = ({navigation}) =>{
-    const {control, handleSubmit, formState:{errors}} = useForm({
+    const {control, handleSubmit, reset, formState:{errors}} = useForm({
         resolver: yupResolver(schema),
         
     });
@@ -38,7 +38,9 @@ const SearchScreen = ({navigation}) =>{
           })
           .then(response => {
               ToastAndroid.show('Aluno Cadastrado com sucesso!', ToastAndroid.SHORT);
+             
               navigation.navigate("CardScreen", {idAluno: response.data.id});
+              reset();
             })
             .catch(error => {
               setError(error.response.data.message)
@@ -52,8 +54,9 @@ const SearchScreen = ({navigation}) =>{
    
     }
 
-    console.log(API_URL);
     return(
+      <ScrollView>
+
       <KeyboardAvoidingView style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
@@ -152,7 +155,9 @@ const SearchScreen = ({navigation}) =>{
                         <Text >Cadastrar</Text>
         </TouchableOpacity>
         <Text style={[styles.erros, styles.erro]}>{error}</Text> 
+   
         </KeyboardAvoidingView>
+        </ScrollView>
     );
 }
 

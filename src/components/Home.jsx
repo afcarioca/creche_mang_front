@@ -9,19 +9,19 @@ const Home = ({navigation}) =>{
         <View  style={styles.container}>
             <View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                     <Image
                         source={pesquisa} 
                         style={styles.pesquisa}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('ClasseScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Classe')}>
                     <Image
                         source={usuarios} 
                         style={styles.pesquisa}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('GraficoScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Grafico')}>
                     <Image
                         source={graficos} 
                         style={styles.grafico}

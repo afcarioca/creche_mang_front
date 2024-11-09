@@ -37,6 +37,7 @@ const CardScreen = ({navigation}) =>{
         useCallback(() => {
             const fetch = async () => {
                 try {
+             
                     const response = await axios.get(`${API_URL}/form/${idAluno}/`, {
                         withCredentials: true
                     });
@@ -61,6 +62,7 @@ const CardScreen = ({navigation}) =>{
    
     
     const atualizar = () =>{
+      
         navigation.navigate("UpdateScreen", {idAluno: idAluno});
     }
 
@@ -79,7 +81,7 @@ const CardScreen = ({navigation}) =>{
                     ativo: response.data.data[0]["ativo"]
                 });
                 ToastAndroid.show(`Aluno excluído!` , ToastAndroid.SHORT);
-                navigation.navigate("ClasseScreen");
+                navigation.navigate("Home");
 
 
             } catch (error) {

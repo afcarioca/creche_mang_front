@@ -23,7 +23,6 @@ const ClasseScreen = ({navigation}) =>{
 
 
     const onSubmit = (dados) => {
-        console.log(dados)
         axios.post(`${API_URL}/form/`,dados,{
             withCredentials: true
         })
@@ -60,7 +59,7 @@ const ClasseScreen = ({navigation}) =>{
                             style={styles.picker}
                             onValueChange={(itemValue) => {
                                 onChange(itemValue);
-                                handleSubmit(onSubmit)();  
+                                handleSubmit(onSubmit)(); 
                             }}
                         >
                             <Picker.Item label="Selecione" value="" />
