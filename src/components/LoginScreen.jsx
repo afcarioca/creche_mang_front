@@ -6,7 +6,7 @@ import { useState} from "react";
 import axios from "axios";
 import {API_URL} from '@env';
 import {aberto, oculto, logo} from "../img/";
-
+import { storeData, retrieveData } from '../utils/storage';
 
 
 
@@ -27,29 +27,29 @@ const LoginScreen = ({navigation}) =>{
 
     const [erro, setErro] = useState("")
     
-    const onSubmit = (dados) =>{
-        axios.post(`${API_URL}/login/`,dados,{
-            withCredentials: true
-        })
-        .then(response => {
-            setLoading(true);
-            
-            setTimeout(() => {
-                setLoading(false);
-                ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
-                navigation.navigate("HomeScreen");
-                reset();
-              }, 1000);
-         
-          })
-          .catch(error => {
-            setErro("Login Inválido");
-        });
+    const onSubmit = async (dados) =>{
+        setLoading(true);
         
-        setTimeout(() => {
-                setErro('');
-        }, 5000);
-    }
+        try {
+          const response = await axios.post(`${API_URL}/login/`, dados, {
+            withCredentials: true,
+          });
+          const token = response.data["Token"];
+          await storeData('token', token); 
+          const storedToken = await retrieveData('token');
+      
+          ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
+          navigation.navigate("HomeScreen");
+          reset();
+        }
+        catch (error) {
+          setErro("Login Inválido");
+          console.error('Erro ao fazer login:', error);
+          setTimeout(() => setErro(''), 5000);
+        } finally {
+          setLoading(false);
+        }
+      };
 
     const isVisivel = () =>{
         setVisibilidade(!visibilidade);

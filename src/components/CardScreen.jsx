@@ -8,6 +8,7 @@ import imgAluno from "../img/aluno.png";
 import update from "../img/update.png";
 import lixeira from "../img/lixeira.png";
 import {API_URL} from '@env';
+import { storeData, retrieveData } from '../utils/storage';
 
 
 
@@ -37,9 +38,12 @@ const CardScreen = ({navigation}) =>{
         useCallback(() => {
             const fetch = async () => {
                 try {
-             
+                    const token = await retrieveData('token');
+
                     const response = await axios.get(`${API_URL}/form/${idAluno}/`, {
-                        withCredentials: true
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     });
                     setInf({
                         id: response.data.data[0].id,
@@ -51,26 +55,28 @@ const CardScreen = ({navigation}) =>{
                     });
                     console.log(response.data.data[0])
                 } catch (error) {
-                    console.error(error.response.data.message);
+                    if(error.response && error.response.status === 401)
+                        navigation.navigate('LoginScreen');
                 }
             };
 
             fetch();
         }, [idAluno])
     );
-
-   
     
     const atualizar = () =>{
-      
-        navigation.navigate("UpdateScreen", {idAluno: idAluno});
+      navigation.navigate("UpdateScreen", {idAluno: idAluno});
     }
 
     const remover = () =>{
         const fetch = async () => {
             try {
+
+                const token = await retrieveData('token');
                 const response = await axios.delete(`${API_URL}/form/${idAluno}/`, {
-                    withCredentials: true
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
                 setInf({
                     id: response.data.data[0].id,
@@ -85,7 +91,8 @@ const CardScreen = ({navigation}) =>{
 
 
             } catch (error) {
-                console.log(error.response.data.message);
+                if(error.response && error.response.status === 401)
+                    navigation.navigate('LoginScreen');
             }
         };
 

@@ -8,6 +8,7 @@ import { RadioButton } from 'react-native-paper';
 import axios from "axios";
 import { useRoute } from '@react-navigation/native';
 import {API_URL} from '@env';
+import { storeData, retrieveData } from '../utils/storage';
 
 
 
@@ -56,47 +57,46 @@ const UpdateScreen = ({navigation}) =>{
   
     const[error, setError] = useState("")
     useEffect(() => {
-        axios.get(`${API_URL}/form/${idAluno}/`,{
-            withCredentials: true
-        })
-        .then(response => {
-            
-            /*
-            console.log(response.data.data[0])
-            setInf({
-                id:response.data.data[0].id,
-                nome:response.data.data[0].nome,
-                turma:response.data.data[0].turma,
-                sexo:response.data.data[0].sexo,
-                bolsa:response.data.data[0]["bolsa_familia"],
-
+        const fetchData = async () => {
+          try {
+            const token = await retrieveData('token');
+    
+            const response = await axios.get(`${API_URL}/form/${idAluno}/`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+             
             });
-           */ 
+    
             const data = response.data.data[0];
-
+    
             reset({
-                nome: data.nome,
-                turma: data.turma,
-                sexo: data.sexo,
-                bolsa_familia: data.bolsa_familia ? "1" : "0", 
+              nome: data.nome,
+              turma: data.turma,
+              sexo: data.sexo,
+              bolsa_familia: data.bolsa_familia ? "1" : "0",
             });
-
-           
-          })
-
-          .catch(error => {
-            console.log(error)
-            setError(error.response.data.message)
-        });
-    }, []); 
+          } catch (error) {
+            setError(error.response?.data?.message || 'Erro ao buscar dados');
+            if(error.response && error.response.status === 401)
+                navigation.navigate('LoginScreen');
+          }
+        };
+    
+        fetchData();
+      }, [idAluno, reset]);
 
 
    
 
     const onSubmit = async (dados) =>{
+        const token = await retrieveData('token');
+
         dados["bolsa_familia"] = parseInt(dados.bolsa_familia);
         await axios.put(`${API_URL}/form/${idAluno}/`,dados,{
-            withCredentials: true
+            headers: {
+                Authorization: `Bearer ${token}`,
+              },
         })
         .then(response => {
             ToastAndroid.show('Aluno atualizado com sucesso!', ToastAndroid.SHORT);
@@ -104,7 +104,8 @@ const UpdateScreen = ({navigation}) =>{
           })
           .catch(error => {
             setError(error.response.data.message)
-            console.log(error)
+            if(error.response && error.response.status === 401)
+                navigation.navigate('LoginScreen');
            
         });
         setTimeout(() => {

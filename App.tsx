@@ -2,7 +2,6 @@ import { Image, StyleSheet, View, TouchableOpacity} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import { LoginScreen, CadastroScreen, UploadScreen, Home, SearchScreen, CardScreen, UpdateScreen, ClasseScreen, GraficoScreen} from './src/components/';
 import logo from "./src/img/logo.png";
 import usuarios from "./src/img/usuarios_menu.png";
@@ -91,6 +90,8 @@ const App = () =>{
       <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false, animation: 'none'  }} />
 
       <Stack.Screen name="HomeScreen" component={MyTabs}  options={({ navigation }) => ({headerShown: false,animation: 'none' })}/>
+
+
 
       <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false,  animation: 'none'  }}/>
 

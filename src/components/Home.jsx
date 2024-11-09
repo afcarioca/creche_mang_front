@@ -2,9 +2,32 @@ import { View, Image, StyleSheet, TouchableOpacity, ScrollView} from "react-nati
 import pesquisa from "../img/pesquisa.png";
 import usuarios from "../img/usuarios.png";
 import graficos from "../img/graficos.png";
-
+import { storeData, retrieveData } from '../utils/storage';
+import { useState, useEffect, } from "react";
+import React, { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = ({navigation}) =>{
+    useFocusEffect(
+        useCallback(() => {
+          const verificaToken = async () => {
+            try {
+              const token = await retrieveData('token');
+              if (!token) 
+                navigation.navigate("LoginScreen")
+              
+            } catch (error) {
+              console.error('Erro ao verificar o token:', error);
+            }
+          };
+    
+          verificaToken();
+          
+          return () => {
+          };
+        }, [navigation])
+      );
+
     return(
         <View  style={styles.container}>
             <View>
@@ -26,9 +49,7 @@ const Home = ({navigation}) =>{
                         source={graficos} 
                         style={styles.grafico}
                     />
-                </TouchableOpacity>
-               
-              
+                </TouchableOpacity> 
             </View>
         </View>
     );

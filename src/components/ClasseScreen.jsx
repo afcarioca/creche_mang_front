@@ -7,7 +7,9 @@ import axios from "axios";
 import { useState } from "react";
 import { DataTable } from 'react-native-paper'; 
 import {API_URL} from '@env';
-
+import { storeData, retrieveData } from '../utils/storage';
+import React, { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const schema = yup.object().shape({
@@ -19,12 +21,34 @@ const ClasseScreen = ({navigation}) =>{
     });
 
     const [alunos, setalunos] = useState([])
+    useFocusEffect(
+        useCallback(() => {
+          const verificaToken = async () => {
+            try {
+              const token = await retrieveData('token');
+              if (!token) 
+                navigation.navigate("LoginScreen")
+              
+            } catch (error) {
+              console.error('Erro ao verificar o token:', error);
+            }
+          };
+    
+          verificaToken();
+          
+          return () => {
+          };
+        }, [navigation])
+      );
 
 
+    const onSubmit = async (dados) => {
+        const token = await retrieveData('token');
 
-    const onSubmit = (dados) => {
         axios.post(`${API_URL}/form/`,dados,{
-            withCredentials: true
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
         .then(response => {
             setalunos(response.data.data); 

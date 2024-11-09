@@ -9,13 +9,16 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
 import {API_URL} from '@env';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { storeData, retrieveData } from '../utils/storage';
 
 const screenWidth = Dimensions.get("window").width;
 const schema = yup.object().shape({
     turma: yup.string().required('Campo turma obrigatório'),
 });
 
-const GraficoScreen = () =>{
+const GraficoScreen = ({navigation}) =>{
     const {control, handleSubmit, formState:{errors}} = useForm({
         resolver: yupResolver(schema),
         
@@ -35,9 +38,36 @@ const GraficoScreen = () =>{
         },
     };
 
+
+    useFocusEffect(
+        useCallback(() => {
+          const verificaToken = async () => {
+            try {
+              const token = await retrieveData('token');
+              if (!token) 
+                navigation.navigate("LoginScreen")
+              
+            } catch (error) {
+              console.error('Erro ao verificar o token:', error);
+            }
+          };
+    
+          verificaToken();
+          
+          return () => {
+          };
+        }, [navigation])
+      );
+
+
+
     const onSubmit = async (data) =>{
+            const token = await retrieveData('token');
+
             await axios.post(`${API_URL}/grafico/`, data,{
-                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             }).then(response => {
                 let jsonString = response.data["data"].replace(/'/g, '"')  
                 jsonData = JSON.parse(jsonString)
@@ -46,7 +76,8 @@ const GraficoScreen = () =>{
                 console.log(salasArray)
               })
               .catch(error => {
-                console.log(error)
+                if(error.response && error.response.status === 401)
+                    navigation.navigate('LoginScreen');
             });
         
     }

@@ -7,7 +7,9 @@ import { Picker } from '@react-native-picker/picker';
 import { RadioButton } from 'react-native-paper';
 import axios from "axios";
 import {API_URL} from '@env';
-
+import { storeData, retrieveData } from '../utils/storage';
+import React, { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -25,16 +27,40 @@ const SearchScreen = ({navigation}) =>{
         
     });
     const[error, setError] = useState("")
-   
-    const onSubmit = (dados) =>{
 
+    useFocusEffect(
+      useCallback(() => {
+        const verificaToken = async () => {
+          try {
+            const token = await retrieveData('token');
+            if (!token) 
+              navigation.navigate("LoginScreen")
+            
+          } catch (error) {
+            console.error('Erro ao verificar o token:', error);
+          }
+        };
+  
+        verificaToken();
+        
+        return () => {
+        };
+      }, [navigation])
+    );
+   
+   
+    const onSubmit = async (dados) =>{
+      const token = await retrieveData('token');
+     
       const formattedData = {
         ...dados,
         bolsa_familia: parseInt(dados.bolsa_familia, 10),
       };
-        
+      
         axios.post(`${API_URL}/form/`,formattedData,{
-              withCredentials: true
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           })
           .then(response => {
               ToastAndroid.show('Aluno Cadastrado com sucesso!', ToastAndroid.SHORT);
@@ -44,7 +70,8 @@ const SearchScreen = ({navigation}) =>{
             })
             .catch(error => {
               setError(error.response.data.message)
-              console.log(error)
+              if(error.response && error.response.status === 401)
+                navigation.navigate('LoginScreen');
              
           });
           
