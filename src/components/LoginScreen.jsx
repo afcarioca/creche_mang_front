@@ -6,8 +6,9 @@ import { useState} from "react";
 import axios from "axios";
 import {API_URL} from '@env';
 import {aberto, oculto, logo} from "../img/";
-import { storeData, retrieveData } from '../utils/storage';
-
+import { storeData, retrieveData, removeData } from '../utils/storage';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 
 const schema = yup.object().shape({
@@ -24,19 +25,36 @@ const LoginScreen = ({navigation}) =>{
 
     const [visibilidade, setVisibilidade] = useState(false)
     const [loading, setLoading] = useState(false);
-
     const [erro, setErro] = useState("")
+
+    useFocusEffect(
+      useCallback(() => {
+          const fetch = async () => {
+              try {
+                  await removeData('token');
+                  await removeData('username');
+
+             
+              } catch (error) {
+                  if(error.response && error.response.status === 401)
+                      navigation.navigate('LoginScreen');
+              }
+          };
+
+          fetch();
+      }, [])
+  );
     
     const onSubmit = async (dados) =>{
         setLoading(true);
-        
         try {
           const response = await axios.post(`${API_URL}/login/`, dados, {
             withCredentials: true,
           });
           const token = response.data["Token"];
+          const username = response.data["username"];
           await storeData('token', token); 
-          const storedToken = await retrieveData('token');
+          await storeData('username', username); 
       
           ToastAndroid.show('Bem-vindo!', ToastAndroid.SHORT);
           navigation.navigate("HomeScreen");
@@ -44,7 +62,7 @@ const LoginScreen = ({navigation}) =>{
         }
         catch (error) {
           setErro("Login Inválido");
-          console.error('Erro ao fazer login:', error);
+          reset()
           setTimeout(() => setErro(''), 5000);
         } finally {
           setLoading(false);
@@ -56,8 +74,9 @@ const LoginScreen = ({navigation}) =>{
     }
     
     const gotoCadastro = () =>{
-        navigation.navigate("CadastroScreen")
         reset();
+        navigation.navigate("CadastroScreen")
+       
     }
 
     if (loading) {
@@ -113,7 +132,7 @@ const LoginScreen = ({navigation}) =>{
                 />
             <TouchableOpacity onPress={isVisivel} style={styles.icon}>
                 <Image
-                source={visibilidade ? aberto : oculto} 
+                source={visibilidade ? oculto : aberto} 
                 style={styles.iconImage}
               />
             </TouchableOpacity>
@@ -125,7 +144,7 @@ const LoginScreen = ({navigation}) =>{
             </TouchableOpacity>
             
             <Text style={styles.cadastro} onPress={gotoCadastro}>Cadastrar</Text>
-            <Text style={[styles.erro, styles.erro]}>{erro}</Text>    
+            <Text style={[styles.erro]}>{erro}</Text>    
         </KeyboardAvoidingView>
     );
 }

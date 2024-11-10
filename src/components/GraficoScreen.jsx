@@ -124,7 +124,53 @@ const GraficoScreen = ({navigation}) =>{
           
                  
         ];
-        const chartData = tipo === "Sexo" ? sexoChartData : bolsaFamiliaChartData;
+
+        const jogosChartData  = [
+              
+            {
+                name: "% Não",
+                population: data["Não"],
+                color: "rgba(3, 72, 122, 1)", 
+                legendFontColor: "rgba(3, 72, 122, 1)",
+                legendFontSize: 13
+            },
+            {
+                name: "% Sim",
+                population: data["Sim"],
+                color: "rgba(25, 189, 238, 1)", 
+                legendFontColor: "rgba(25, 189, 238, 1)",
+                legendFontSize: 13
+            },
+          
+                 
+        ];
+
+        const alcoolChartData  = [
+              
+            {
+                name: "% Não",
+                population: data["Não"],
+                color: "rgba(3, 72, 122, 1)", 
+                legendFontColor: "rgba(3, 72, 122, 1)",
+                legendFontSize: 13
+            },
+            {
+                name: "% Sim",
+                population: data["Sim"],
+                color: "rgba(25, 189, 238, 1)", 
+                legendFontColor: "rgba(25, 189, 238, 1)",
+                legendFontSize: 13
+            },
+          
+                 
+        ];
+        const formChart = new Map();
+    
+        formChart.set("Sexo", sexoChartData);
+        formChart.set("Bolsa Família", bolsaFamiliaChartData);
+        formChart.set("Jogos", jogosChartData);
+        formChart.set("Alcool", alcoolChartData);
+        const chartData = formChart.get(tipo);
 
         return (
             <View key={title + "-pie"}  style={{ width: screenWidth / 2.5, margin: 5 }}>
@@ -179,12 +225,12 @@ const GraficoScreen = ({navigation}) =>{
                 {Array.isArray(salas) && Array.isArray(salas) && salas.length > 0 ?(
                     <View>
                           <FlatList
-                            data={[{ key: "Sexo", data: salas[2] }, { key: "Bolsa Família", data: salas[3] }, ]}
+                            data={[{ key: "Sexo", data: salas[2] }, { key: "Bolsa Família", data: salas[3] },  { key: "Jogos", data: salas[4] },  { key: "Alcool", data: salas[5] }]}
                             horizontal
                             keyExtractor={(item) => item.key}
                             renderItem={({ item }) => (
                                 <View style={{ width: screenWidth * 1.5, alignItems: 'center' }}>
-                                    {renderPieChart(`Distribuição de ${item.key}`, item.data, item.key)}
+                                    {renderPieChart(`${item.key}`, item.data, item.key)}
                                 </View>
                             )}
                             showsHorizontalScrollIndicator={false}
@@ -193,9 +239,50 @@ const GraficoScreen = ({navigation}) =>{
                             <DataTable.Header style={styles.tableHeader}> 
                                 <DataTable.Title>Total de Crianças: {salas[1]}</DataTable.Title>  
                             </DataTable.Header> 
-                            
                         </DataTable>
-                          
+                        <DataTable style={styles.container}> 
+                            <DataTable.Header style={styles.tableHeader}> 
+                                <DataTable.Title>Distribuição</DataTable.Title>  
+
+                                <DataTable.Title>Sim</DataTable.Title>  
+                                <DataTable.Title>Não</DataTable.Title>  
+                            </DataTable.Header> 
+                            <DataTable.Row>
+                                <DataTable.Cell>Bolsa-Família</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[3]["Sim"]/100)*salas[1])}</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[3]["Não"]/100)*salas[1])}</DataTable.Cell>
+
+                            </DataTable.Row>
+                            <DataTable.Row>
+                                <DataTable.Cell>Jogos de Azar</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[4]["Sim"]/100)*salas[1])}</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[4]["Não"]/100)*salas[1])}</DataTable.Cell>
+
+                            </DataTable.Row>
+                            <DataTable.Row>
+                                <DataTable.Cell>Álcool</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[5]["Sim"]/100)*salas[1])}</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[5]["Não"]/100)*salas[1])}</DataTable.Cell>
+
+                            </DataTable.Row>
+                        </DataTable>
+                        <DataTable style={styles.container}> 
+                            <DataTable.Header style={styles.tableHeader}> 
+
+                                <DataTable.Title>Distribuição</DataTable.Title>  
+                                <DataTable.Title>Masculino</DataTable.Title>  
+                                <DataTable.Title>Feminino</DataTable.Title>  
+                            </DataTable.Header> 
+                            <DataTable.Row>
+                                <DataTable.Cell>Sexo</DataTable.Cell>
+
+                                <DataTable.Cell>{Math.round((salas[2]["Masculino"]/100)*salas[1])}</DataTable.Cell>
+                                <DataTable.Cell>{Math.round((salas[2]["Feminino"]/100)*salas[1])}</DataTable.Cell>
+
+                            </DataTable.Row>
+
+                        </DataTable>
+
                     </View>
                 ) : (
                     <Text style={styles.text}>Nenhum dado disponível</Text>

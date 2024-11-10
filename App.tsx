@@ -2,11 +2,13 @@ import { Image, StyleSheet, View, TouchableOpacity} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { LoginScreen, CadastroScreen, UploadScreen, Home, SearchScreen, CardScreen, UpdateScreen, ClasseScreen, GraficoScreen} from './src/components/';
+import {LoginScreen, CadastroScreen, UploadScreen, Home, SearchScreen, CardScreen, UpdateScreen, ClasseScreen, GraficoScreen, } from './src/components/';
 import logo from "./src/img/logo.png";
 import usuarios from "./src/img/usuarios_menu.png";
 import graficos from "./src/img/graficos_menu.png";
 import pesquisa from "./src/img/pesquisa_menu.png";
+import  perfil from "./src/img/aluno_menu.png";
+import PerfilScreen from "./src/components/PerfilScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -35,7 +37,7 @@ const MyTabs = ({ navigation }) => {
           
           ),}}  />
 
-    <Tab.Screen name="Search" component={SearchScreen}  options={{headerShown: false, 
+    <Tab.Screen name="Search" component={SearchScreen}  options={{ headerShown: false,
         tabBarIcon: ({ color, size }) => (
          
           <TouchableOpacity onPress={() => navigation.navigate('Search')}>
@@ -67,19 +69,29 @@ const MyTabs = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.navigate('Grafico')}>
             <Image
               source={graficos}
-              style={styles.logo}
+              style={styles.grafico}
             />
           </TouchableOpacity>
       
           
           ),}}  />
-      
-          
-          
-          
-         
 
+    <Tab.Screen name="Perfil" component={PerfilScreen}  options={{headerShown: false, 
+            tabBarIcon: ({ color, size }) => (
+            
+              <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>
+                <Image
+                  source={perfil}
+                  style={styles.perfil}
+                />
+              </TouchableOpacity>
+          
+              
+              ),}}  />
+      
     </Tab.Navigator>
+
+    
   );
 };
 
@@ -87,8 +99,8 @@ const App = () =>{
   return(
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false,  animation: 'none'  }}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: false, animation: 'none'  }} />
+      <Stack.Screen name="CadastroScreen" component={CadastroScreen}  options={{ headerShown: false,  animation: 'none'  }}/>
       <Stack.Screen name="HomeScreen" component={MyTabs}  options={({ navigation }) => ({headerShown: false,animation: 'none' })}/>
       <Stack.Screen name="ClasseScreen" component={MyTabs}  
          options={({ navigation }) => ({
@@ -186,6 +198,26 @@ const App = () =>{
   
       />
 
+      <Stack.Screen name="PerfilScreen" component={MyTabs} 
+        options={({ navigation }) => ({
+          headerTitle: () => (
+            <View>
+                 <Image
+                    source={logo} 
+                    style={styles.logo}
+                  />
+            </View>   
+          ),
+          headerTitleAlign: 'center',
+          headerStyle:{
+            backgroundColor:"#03487a"
+          },
+         
+        })}
+  
+      />
+      
+
      
 
       
@@ -207,4 +239,12 @@ const styles = StyleSheet.create({
     width:40,
     height:40
   },
+  perfil:{
+    width:35,
+    height:35
+  },
+  grafico:{
+    width:55,
+    height:55
+  }
 })

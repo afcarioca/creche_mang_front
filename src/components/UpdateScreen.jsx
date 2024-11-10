@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import { View, Text, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, ToastAndroid} from "react-native"
+import { View, Text, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, ToastAndroid, ScrollView} from "react-native"
 import { Controller, useForm} from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -27,13 +27,15 @@ const UpdateScreen = ({navigation}) =>{
         resolver: yupResolver(schema),
         
     });
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [inf, setInf] = useState({
         id: "",
         nome:"",
         turma:"",
         sexo:"",
-        bolsa:""
+        bolsa:"",
+
      })
 
 
@@ -44,7 +46,6 @@ const UpdateScreen = ({navigation}) =>{
     aluno.set("M1", "Maternal 1");
     aluno.set("M2", "Maternal 2");
    
-
 
     const aluno1 = new Map();
     aluno1.set("F", "Feminino");
@@ -75,6 +76,8 @@ const UpdateScreen = ({navigation}) =>{
               turma: data.turma,
               sexo: data.sexo,
               bolsa_familia: data.bolsa_familia ? "1" : "0",
+              jogos: data.jogos ? "1" : "0",
+              alcool: data.alcool ? "1" : "0",
             });
           } catch (error) {
             setError(error.response?.data?.message || 'Erro ao buscar dados');
@@ -93,6 +96,9 @@ const UpdateScreen = ({navigation}) =>{
         const token = await retrieveData('token');
 
         dados["bolsa_familia"] = parseInt(dados.bolsa_familia);
+        dados["alcool"] = parseInt(dados.alcool);
+        dados["jogos"] = parseInt(dados.jogos);
+
         await axios.put(`${API_URL}/form/${idAluno}/`,dados,{
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -114,10 +120,23 @@ const UpdateScreen = ({navigation}) =>{
     }
 
     return(
+        <ScrollView>
+          <View style={styles.navContainer}>
+                  <TouchableOpacity onPress={() => setCurrentPage(1)} style={styles.navButton}>
+                      <Text style={styles.navText}>Página 1</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setCurrentPage(2)} style={styles.navButton}>
+                      <Text style={styles.navText}>Página 2</Text>
+                  </TouchableOpacity>
+            </View>       
+                 
         <KeyboardAvoidingView style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-    >
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                >
+        {currentPage === 1 && (
+            <>
+            
         <Controller 
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -170,7 +189,12 @@ const UpdateScreen = ({navigation}) =>{
                 )}
             />
             {errors.sexo && <Text style={styles.erros}>{errors.sexo.message}</Text>}
-            <Text style={styles.bolsa}>Possui bolsa família?</Text>
+            </> )}
+            {currentPage === 2 && (
+            <>
+            
+            
+            <Text style={styles.bolsa}>Possui bolsa-família?</Text>
             <Controller
                 control={control}
                 name="bolsa_familia"
@@ -195,14 +219,67 @@ const UpdateScreen = ({navigation}) =>{
                     </View>
                 )}
             />
-            {errors.bolsa_familia && <Text style={styles.erros}>{errors.bolsa_familia.message}</Text>}
 
+            <Text style={styles.jogos}>Algum familiar aposta em jogos azar?</Text>
+                <Controller
+                    control={control}
+                    name="jogos"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                        <View>
+                            <RadioButton.Group
+                                onValueChange={onChange}
+                                value={value}
+                            >
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+                                        <RadioButton value="1" />
+                                        <Text>Sim</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <RadioButton value="0" />
+                                        <Text>Não</Text>
+                                    </View>
+                                </View>
+                            </RadioButton.Group>
+                        </View>
+                    )}
+            />
+
+                <Text style={styles.alcool}>Algum familiar consome álcool?</Text>
+                <Controller
+                    control={control}
+                    name="alcool"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                        <View>
+                            <RadioButton.Group
+                                onValueChange={onChange}
+                                value={value}
+                            >
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+                                        <RadioButton value="1" />
+                                        <Text>Sim</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <RadioButton value="0" />
+                                        <Text>Não</Text>
+                                    </View>
+                                </View>
+                            </RadioButton.Group>
+                        </View>
+                    )}
+            />
+
+            </> )}
        
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
             <Text >Atualizar</Text>
         </TouchableOpacity>
         <Text style={[styles.erros]}>{error}</Text> 
     </KeyboardAvoidingView>
+    </ScrollView>
     );
 }
 
@@ -265,10 +342,21 @@ const styles = StyleSheet.create({
       },
 
       bolsa:{
-        marginRight:210,
+        
         marginTop:30,
         
       },
+
+      jogos:{
+      
+        marginTop:30,
+      },
+
+      alcool:{
+        
+        marginTop:30,
+      },
+
       picker: {
         height: 50,
         width: '100%',
@@ -276,5 +364,21 @@ const styles = StyleSheet.create({
         color:'#19bdee',
       
       },
+
+      navContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+     
+         backgroundColor:"#19bdee"
+    },
+    navButton: { 
+        padding: 8,
+        flexDirection: 'row', 
+        backgroundColor:"#19bdee"
+  
+    },
+    navText: { 
+        color: '#fff' 
+    },
 
 })

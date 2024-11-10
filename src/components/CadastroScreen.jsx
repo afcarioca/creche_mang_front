@@ -13,7 +13,7 @@ const schema = yup.object().shape({
              
     email: yup.string().required('Campo e-mail obrigatório')
                        .email('E-mail inválido'),
-    password1: yup.string().required('Campo senha obrigatório')
+    password1: yup.string().required('Campo senha obrigatórioç')
                        .min(8, 'A senha deve conter no mínimo 8 caracteres'),
     password2: yup.string().oneOf([yup.ref('password1'), null], 'As senhas não coincidem')
     .required('Campo senha obrigatório'),
@@ -125,7 +125,7 @@ const CadastroScreen = ({navigation}) =>{
                 />
               <TouchableOpacity onPress={isViPassword1} style={styles.icon}>
                     <Image
-                    source={viPassword1 ? aberto : oculto} 
+                    source={viPassword1 ? oculto : aberto} 
                     style={styles.iconImage}
                 />
                 </TouchableOpacity>
@@ -153,7 +153,7 @@ const CadastroScreen = ({navigation}) =>{
                 />
                 <TouchableOpacity onPress={isViPassword2} style={styles.icon}>
                     <Image
-                    source={viPassword2 ? aberto : oculto} 
+                    source={viPassword2 ? oculto : aberto} 
                     style={styles.iconImage}
                 />
                 </TouchableOpacity>
@@ -169,8 +169,8 @@ const CadastroScreen = ({navigation}) =>{
 
             </View>
             
-            <Text style={[styles.erro, styles.erro]}>{erro}</Text> 
             </View>
+            <Text style={[styles.erro]}>{erro}</Text> 
 
         </KeyboardAvoidingView>
     );

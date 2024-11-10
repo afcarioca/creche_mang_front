@@ -17,7 +17,9 @@ const schema = yup.object().shape({
     nome: yup.string().required('Campo nome obrigatório'),
     turma: yup.string().required('Campo turma obrigatório'),
     sexo: yup.string().required('Campo sexo obrigatório'),
-    bolsa_familia: yup.string().required('Campo bolsa família obrigatório'),
+    bolsa_familia: yup.string().required('Campo bolsa-família obrigatório'),
+    jogos: yup.string().required('Campo jogo obrigatório'),
+    alcool: yup.string().required('Campo álcool obrigatório'),
 
 });
 
@@ -27,7 +29,8 @@ const SearchScreen = ({navigation}) =>{
         
     });
     const[error, setError] = useState("")
-
+    const [currentPage, setCurrentPage] = useState(1);
+    
     useFocusEffect(
       useCallback(() => {
         const verificaToken = async () => {
@@ -40,8 +43,8 @@ const SearchScreen = ({navigation}) =>{
             console.error('Erro ao verificar o token:', error);
           }
         };
-  
         verificaToken();
+          
         
         return () => {
         };
@@ -83,30 +86,37 @@ const SearchScreen = ({navigation}) =>{
 
     return(
       <ScrollView>
-
+        <View style={styles.navContainer}>
+                  <TouchableOpacity onPress={() => setCurrentPage(1)} style={styles.navButton}>
+                      <Text style={styles.navText}>Página 1</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setCurrentPage(2)} style={styles.navButton}>
+                      <Text style={styles.navText}>Página 2</Text>
+                  </TouchableOpacity>
+        </View>
       <KeyboardAvoidingView style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
     >
-         <Controller 
-            control = {control}
-            render ={({field: {onChange, onBlur, value}}) =>(
-                <TextInput  style={[styles.input, styles.inputNome]}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder="Nome da Criança"
-                    placeholderTextColor="#888"
-                />
-            )}
-            name="nome"
-            rules={{required: true}}
-            defaultValue=""
-        />
-        {errors.nome && <Text style={styles.erros}>{errors.nome.message}</Text>}
-        <Text style={styles.label}>Turma:</Text>
-
-        <Controller
+         {currentPage === 1 && (
+              <>
+          
+                  <Controller
+                      control={control}
+                      name="nome"
+                      render={({ field: { onChange, value } }) => (
+                          <TextInput
+                              style={styles.input}
+                              onChangeText={onChange}
+                              value={value}
+                              placeholder="Nome da Criança"
+                              placeholderTextColor="#888"
+                          />
+                      )}
+                  />
+                  {errors.nome && <Text style={styles.erros}>{errors.nome.message}</Text>}
+                  <Text style={styles.label}>Turma:</Text>
+                    <Controller
                 control={control}
                 name="turma"
                 rules={{ required: true }}
@@ -126,8 +136,7 @@ const SearchScreen = ({navigation}) =>{
                 )}
           />
             {errors.turma && <Text style={styles.erros}>{errors.turma.message}</Text>}
-        
-        <Text style={styles.label}>Sexo:</Text>
+            <Text style={styles.label}>Sexo:</Text>
         <Controller
                 control={control}
                 name="sexo"
@@ -147,8 +156,11 @@ const SearchScreen = ({navigation}) =>{
                 )}
         />
         {errors.sexo && <Text style={styles.erros}>{errors.sexo.message}</Text>}
-
-      <Text style={styles.bolsa}>Possui bolsa família?</Text>
+                  </>
+            )}
+          {currentPage === 2 && (
+              <>
+                 <Text style={styles.bolsa}>Possui bolsa-família?</Text>
       <Controller
         control={control}
         name="bolsa_familia"
@@ -175,16 +187,76 @@ const SearchScreen = ({navigation}) =>{
         )}
       />
       {errors.bolsa_familia && <Text style={styles.erros}>{errors.bolsa_familia.message}</Text>}
+      
+      
+      <Text style={styles.jogos}>Algum familiar aposta em jogos azar?</Text>
 
+      <Controller
+        control={control}
+        name="jogos"
+        rules={{ required: true }} 
+        render={({ field: { onChange, value } }) => (
+          <View>
+            <RadioButton.Group
+              onValueChange={onChange} 
+              value={value}
+              
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10  }}>
+                  <RadioButton color="gray" value="1" />
+                  <Text style={styles.text}>Sim</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <RadioButton color="gray" value="0" />
+                  <Text  style={styles.text}>Não</Text>
+                </View>
+              </View>
+            </RadioButton.Group>
+          </View>
+        )}
+      />
+      {errors.jogos && <Text style={styles.erros}>{errors.jogos.message}</Text>}
+      <Text style={styles.alcool}>Algum familiar consome álcool?</Text>
 
+<Controller
+  control={control}
+  name="alcool"
+  rules={{ required: true }} 
+  render={({ field: { onChange, value } }) => (
+    <View>
+      <RadioButton.Group
+        onValueChange={onChange} 
+        value={value}
+        
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10  }}>
+            <RadioButton color="gray" value="1" />
+            <Text style={styles.text}>Sim</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <RadioButton color="gray" value="0" />
+            <Text  style={styles.text}>Não</Text>
+          </View>
+        </View>
+      </RadioButton.Group>
+    </View>
+  )}
+/>
+{errors.alcool && <Text style={styles.erros}>{errors.alcool.message}</Text>}
+                
+            </> 
+               
+            )}
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-                        <Text >Cadastrar</Text>
-        </TouchableOpacity>
-        <Text style={[styles.erros, styles.erro]}>{error}</Text> 
-   
-        </KeyboardAvoidingView>
-        </ScrollView>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+                      <Text >Cadastrar</Text>
+      </TouchableOpacity>
+      <Text style={[styles.erros, styles.erro]}>{error}</Text> 
+  
+      </KeyboardAvoidingView>
+      </ScrollView>
     );
 }
 
@@ -248,11 +320,25 @@ const styles = StyleSheet.create({
     },
 
     bolsa:{
-      marginRight:210,
       marginTop:30,
       color:"gray"
       
     },
+
+    jogos:{
+      marginTop:30,
+      color:"gray"
+      
+    },
+
+    alcool:{
+      
+
+      marginTop:30,
+      color:"gray"
+      
+    },
+
     picker: {
       height: 50,
       width: '100%',
@@ -264,6 +350,22 @@ const styles = StyleSheet.create({
     text:{
       color:'#19bdee',
 
-    }
+    },
+
+    navContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+   
+       backgroundColor:"#19bdee"
+  },
+  navButton: { 
+      padding: 8,
+      flexDirection: 'row', 
+      backgroundColor:"#19bdee"
+
+  },
+  navText: { 
+      color: '#fff' 
+  },
 
 })
