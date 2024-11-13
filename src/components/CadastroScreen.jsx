@@ -31,6 +31,11 @@ const CadastroScreen = ({navigation}) =>{
     const[erro, setErro] = useState("")
 
     const onSubmit = (dados) =>{
+        dados["username"] = dados["username"].trim();
+        dados["email"] = dados["email"].trim();
+        dados["passwor1"] = dados["password1"].trim();
+        dados["password2"] = dados["password2"].trim();
+        
         axios.post(`${API_URL}/register/`,dados,{
             withCredentials: true
         })
@@ -86,7 +91,6 @@ const CadastroScreen = ({navigation}) =>{
             />
             {errors.username && <Text style={styles.erro}>{errors.username.message}</Text>}
 
-       
             <Controller 
                 control = {control}
                 render ={({field: {onChange, onBlur, value}}) =>(

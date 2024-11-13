@@ -46,6 +46,8 @@ const LoginScreen = ({navigation}) =>{
   );
     
     const onSubmit = async (dados) =>{
+        dados["usuario"] = dados["usuario"].trim(); 
+        dados["senha"] = dados["senha"].trim(); 
         setLoading(true);
         try {
           const response = await axios.post(`${API_URL}/login/`, dados, {
