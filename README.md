@@ -22,10 +22,12 @@ Baixe o projeto existente no GitHub usando o seguinte comando ou faça o downloa
 
 ```bash  
 git clone https://github.com/afcarioca/creche_mang_front.git
+```
 
 ##Crie um arquivo chamado .env na raiz do projeto e insira a seguinte informação:
+```bash 
 API_URL=https://crechemangback.vercel.app/api  
-
+```
 
 
 
